@@ -7,11 +7,11 @@ import javafx.scene.image.ImageView;
 public class PoketmonBook1 {
 	private int no;
 	private String image;
-	private ImageView image2;
+	private String image2;
+	private ImageView imageView;
 	private String name;
 	private String type1;
 	private String type2;
-	private String imageName;
 	private String hp;
 	private String atk;
 	private String def;
@@ -33,33 +33,24 @@ public class PoketmonBook1 {
 	}
 	
 
-	public PoketmonBook1(int no, ImageView image2, String name, String type1, String type2) {
+	public PoketmonBook1(int no, ImageView imageView, String name, String type1, String type2) {
 		this.no = no;
-		this.image2 = image2;
+		this.imageView = imageView;
 		this.name = name;
 		this.type1 = type1;
 		this.type2 = type2;
 	}
 	
-	public PoketmonBook1(String image,  String name, String type1, String type2,
-			 String hp, String atk, String def, String sAtk, String sDef, String speed, String trait,
-			 String height, String weight, String evolve, String info) {
-		
+	public PoketmonBook1(String image,  String name, String hp, String atk, String def, String sAtk, String sDef, String speed ) {
 		this.image = image;
 		this.name = name;
-		this.type1 = type1;
-		this.type2 = type2;
 		this.hp = hp;
 		this.atk = atk;
 		this.def = def;
 		this.sAtk = sAtk;
 		this.sDef = sDef;
 		this.speed = speed;
-		this.trait = trait;
-		this.height = height;
-		this.weight = weight;
-		this.evolve = evolve;
-		this.info = info;
+	
 	}
 	public PoketmonBook1(String image,  String name, String type1, 
 			 String hp, String atk, String def, String sAtk, String sDef, String speed, String trait,
@@ -80,6 +71,52 @@ public class PoketmonBook1 {
 		this.evolve = evolve;
 		this.info = info;
 	}
+	public PoketmonBook1(int no, String image2, String name, String type1,
+			String hp, String atk, String def, String sAtk, String sDef, String speed, String trait,
+			String height, String weight, String evolve, String info) {
+		
+		super();
+		this.no = no;
+		this.image2 = image2;
+		this.name = name;
+		this.type1 = type1;
+		this.hp = hp;
+		this.atk = atk;
+		this.def = def;
+		this.sAtk = sAtk;
+		this.sDef = sDef;
+		this.speed = speed;
+		this.trait = trait;
+		this.height = height;
+		this.weight = weight;
+		this.evolve = evolve;
+		this.info = info;
+	}
+
+
+	public PoketmonBook1(int no, String image2, String name, String type1,
+			String type2, String hp, String atk, String def, String sAtk, String sDef, String speed, String trait,
+			String height, String weight, String evolve, String info) {
+		
+		super();
+		this.no = no;
+		this.image2 = image2;
+		this.name = name;
+		this.type1 = type1;
+		this.type2 = type2;
+		this.hp = hp;
+		this.atk = atk;
+		this.def = def;
+		this.sAtk = sAtk;
+		this.sDef = sDef;
+		this.speed = speed;
+		this.trait = trait;
+		this.height = height;
+		this.weight = weight;
+		this.evolve = evolve;
+		this.info = info;
+	}
+
 
 	public int getNo() {
 		return no;
@@ -101,13 +138,13 @@ public class PoketmonBook1 {
 	}
 
 
-	public ImageView getImage2() {
-		return image2;
+	public ImageView getImageView() {
+		return imageView;
 	}
 
 
-	public void setImage2(ImageView image2) {
-		this.image2 = image2;
+	public void setImageView(ImageView imageView) {
+		this.imageView = imageView;
 	}
 
 
@@ -138,16 +175,6 @@ public class PoketmonBook1 {
 
 	public void setType2(String type2) {
 		this.type2 = type2;
-	}
-
-
-	public String getImageName() {
-		return imageName;
-	}
-
-
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
 	}
 
 
@@ -260,6 +287,26 @@ public class PoketmonBook1 {
 		this.info = info;
 	}
 
+
+	public String getImage2() {
+		return image2;
+	}
+
+
+	public void setImage2(String image2) {
+		this.image2 = image2;
+	}
+
+
+	@Override
+	public String toString() {
+		return "PoketmonBook1 [no=" + no + ", image=" + image + ", image2=" + image2 
+				+ ", name=" + name + ", type1=" + type1 + ", type2=" + type2 + ", hp=" + hp + ", atk=" + atk + ", def="
+				+ def + ", sAtk=" + sAtk + ", sDef=" + sDef + ", speed=" + speed + ", trait=" + trait + ", height="
+				+ height + ", weight=" + weight + ", evolve=" + evolve + ", info=" + info + "]";
+	}
+	
+	
 
 	
 }

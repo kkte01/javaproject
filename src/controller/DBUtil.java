@@ -11,6 +11,7 @@ public class DBUtil {
    public static Connection getConnection() throws Exception {
       Class.forName(DRIVER);
       Connection con = DriverManager.getConnection(URL,"poketmon","Pirates!11");
+      //체크
       System.out.println("데이터베이스 연결성공");
       return con;
    }

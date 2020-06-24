@@ -23,14 +23,14 @@
                   <Image url="@../../../../Desktop/image1.jpg" />
                </image>
             </ImageView>
-            <ImageView fx:id="imgPoket" fitHeight="203.0" fitWidth="324.0" layoutX="14.0" layoutY="231.0" pickOnBounds="true">
+            <ImageView fx:id="imgPoket" fitHeight="203.0" fitWidth="259.0" layoutX="14.0" layoutY="231.0" pickOnBounds="true">
                <image>
                   <Image url="@../../../../Desktop/image1.jpg" />
                </image>
             </ImageView>
-            <BarChart fx:id="mainXYchart" layoutX="363.0" layoutY="205.0" prefHeight="229.0" prefWidth="436.0">
+            <BarChart fx:id="mainXYchart" layoutX="276.0" layoutY="163.0" prefHeight="280.0" prefWidth="523.0">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis prefHeight="30.0" prefWidth="456.0" side="BOTTOM" />
               </xAxis>
               <yAxis>
                 <NumberAxis side="LEFT" />
@@ -39,12 +39,12 @@
             <Label layoutX="207.0" layoutY="22.0" text="트레이너 이름 : " />
             <Label fx:id="labelTrainer" layoutX="307.0" layoutY="22.0" text="Label" />
             <Label layoutX="14.0" layoutY="216.0" text="랜덤 포켓몬 사진" />
-            <Button fx:id="btnRandomPoket" layoutX="383.0" layoutY="90.0" mnemonicParsing="false" text="랜덤 포켓몬 설정하기" />
-            <Button fx:id="btnRandomName" layoutX="383.0" layoutY="142.0" mnemonicParsing="false" text="랜덤 트레이너 이름 설정" />
-            <Label layoutX="385.0" layoutY="194.0" text="랜덤 포켓몬 능력치" />
-            <Button fx:id="btnChangeName" layoutX="562.0" layoutY="90.0" mnemonicParsing="false" text="트레이너 이름 변경" />
-            <Button fx:id="btnChangeImage" layoutX="562.0" layoutY="142.0" mnemonicParsing="false" text="대표이미지 변경" />
-            <Label fx:id="lblMonName" layoutX="276.0" layoutY="209.0" text="Label" />
+            <Button fx:id="btnRandomPoket" layoutX="383.0" layoutY="52.0" mnemonicParsing="false" text="랜덤 포켓몬 설정하기" />
+            <Button fx:id="btnRandomName" layoutX="383.0" layoutY="101.0" mnemonicParsing="false" text="랜덤 트레이너 이름 설정" />
+            <Label layoutX="307.0" layoutY="146.0" text="랜덤 포켓몬 능력치" />
+            <Button fx:id="btnChangeName" layoutX="562.0" layoutY="52.0" mnemonicParsing="false" text="트레이너 이름 변경" />
+            <Button fx:id="btnChangeImage" layoutX="562.0" layoutY="101.0" mnemonicParsing="false" text="대표이미지 변경" />
+            <Label fx:id="lblMonName" layoutX="236.0" layoutY="209.0" text="Label" />
          </children></AnchorPane>
       <TextField layoutY="31.0" prefHeight="43.0" prefWidth="850.0" style="-fx-opacity: 0.7;" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutY="-2.0" prefHeight="33.0" prefWidth="90.0" text="공 지 사 항">
