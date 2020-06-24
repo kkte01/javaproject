@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="99.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="14.0" layoutY="21.0" text="공 지 사 항 변 경 창" />
+      <TextField id="txtFieldNotice" alignment="CENTER" layoutX="14.0" layoutY="50.0" prefHeight="23.0" prefWidth="326.0" promptText="원하는 공지사항 입력해주세요" />
+      <Button id="btnRegister" layoutX="348.0" layoutY="50.0" mnemonicParsing="false" text="등 록" />
+      <Button id="btnCancel" layoutX="410.0" layoutY="50.0" mnemonicParsing="false" text="취 소" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="500.0" fitWidth="607.0" layoutX="-3.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/동영상%20배경화면.jpg" />
+         </image>
+      </ImageView>
+      <MediaView id="mdvRandom" fitHeight="300.0" fitWidth="380.0" layoutX="101.0" layoutY="150.0" preserveRatio="false" />
+      <Button id="btnRandomExit" layoutX="517.0" layoutY="26.0" mnemonicParsing="false" text="나 가 기" />
+      <Button id="btnReview" layoutX="509.0" layoutY="80.0" mnemonicParsing="false" text="다 시 보 기" />
+   </children>
+</AnchorPane>

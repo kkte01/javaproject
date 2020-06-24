@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="380.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="380.0" fitWidth="550.0">
+         <image>
+            <Image url="@../images/로그인창%20이미지.jpg" />
+         </image>
+      </ImageView>
+      <TextField id="txtIDName" layoutX="79.0" layoutY="69.0" prefHeight="23.0" prefWidth="178.0" />
+      <Label layoutX="27.0" layoutY="73.0" text="이    름 :" />
+      <Label layoutX="29.0" layoutY="105.0" text="E-Mail :" />
+      <TextField id="txtIDEmail" layoutX="79.0" layoutY="101.0" prefHeight="23.0" prefWidth="178.0" />
+      <TextField id="txtPWID" layoutX="80.0" layoutY="254.0" prefHeight="23.0" prefWidth="178.0" />
+      <Label layoutX="26.0" layoutY="36.0" prefHeight="28.0" prefWidth="52.0" text="ID 찾 기">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="28.0" layoutY="225.0" prefHeight="28.0" prefWidth="60.0" text="PW 찾 기">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button id="btnFindOk" layoutX="194.0" layoutY="181.0" mnemonicParsing="false" text="ID 찾기" />
+      <Button id="btnFindCancel" layoutX="277.0" layoutY="181.0" mnemonicParsing="false" text="취  소" />
+      <Button id="btnPWCancel" layoutX="278.0" layoutY="352.0" mnemonicParsing="false" text="취  소" />
+      <Button id="btnPWOK" layoutX="197.0" layoutY="352.0" mnemonicParsing="false" text="PW 찾기" />
+      <Label layoutX="34.0" layoutY="256.0" text="I   D :" />
+      <Label layoutX="24.0" layoutY="289.0" text="전화번호:" />
+      <TextField id="txtPWPhone" layoutX="80.0" layoutY="286.0" prefHeight="23.0" prefWidth="178.0" />
+      <TextField id="txtIDPhone" layoutX="80.0" layoutY="134.0" prefHeight="23.0" prefWidth="178.0" />
+      <Label layoutX="25.0" layoutY="138.0" text="전화번호:" />
+   </children>
+</AnchorPane>

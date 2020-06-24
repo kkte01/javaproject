@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="350.0" fitWidth="600.0">
+         <image>
+            <Image url="@../images/도감%20배경.jpg" />
+         </image>
+      </ImageView>
+      <TableView id="tblView" layoutX="60.0" layoutY="29.0" prefHeight="312.0" prefWidth="462.0" style="-fx-background-color: #D3F9FD;" />
+      <Label layoutX="15.0" prefHeight="24.0" prefWidth="380.0" style="-fx-background-color: #59DBEA;" text="포켓몬 도감" textAlignment="RIGHT" />
+      <Button id="btnIllustratedCencle" layoutX="529.0" layoutY="317.0" mnemonicParsing="false" style="-fx-background-color: skyblue;" text="돌아가기" />
+   </children>
+</AnchorPane>

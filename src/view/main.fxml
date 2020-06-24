@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainRootController">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="850.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/배경.gif" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="14.0" layoutY="80.0" prefHeight="462.0" prefWidth="820.0" style="-fx-background-color: white; -fx-opacity: 0.8;">
+         <children>
+            <ImageView fx:id="imgTrainer" fitHeight="181.0" fitWidth="202.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Desktop/image1.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgPoket" fitHeight="203.0" fitWidth="324.0" layoutX="14.0" layoutY="231.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../../../Desktop/image1.jpg" />
+               </image>
+            </ImageView>
+            <BarChart fx:id="mainXYchart" layoutX="363.0" layoutY="205.0" prefHeight="229.0" prefWidth="436.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
+            <Label layoutX="207.0" layoutY="22.0" text="트레이너 이름 : " />
+            <Label fx:id="labelTrainer" layoutX="307.0" layoutY="22.0" text="Label" />
+            <Label layoutX="14.0" layoutY="216.0" text="랜덤 포켓몬 사진" />
+            <Button fx:id="btnRandomPoket" layoutX="383.0" layoutY="90.0" mnemonicParsing="false" text="랜덤 포켓몬 설정하기" />
+            <Button fx:id="btnRandomName" layoutX="383.0" layoutY="142.0" mnemonicParsing="false" text="랜덤 트레이너 이름 설정" />
+            <Label layoutX="385.0" layoutY="194.0" text="랜덤 포켓몬 능력치" />
+            <Button fx:id="btnChangeName" layoutX="562.0" layoutY="90.0" mnemonicParsing="false" text="트레이너 이름 변경" />
+            <Button fx:id="btnChangeImage" layoutX="562.0" layoutY="142.0" mnemonicParsing="false" text="대표이미지 변경" />
+            <Label fx:id="lblMonName" layoutX="276.0" layoutY="209.0" text="Label" />
+         </children></AnchorPane>
+      <TextField layoutY="31.0" prefHeight="43.0" prefWidth="850.0" style="-fx-opacity: 0.7;" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="-2.0" prefHeight="33.0" prefWidth="90.0" text="공 지 사 항">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelNotice" alignment="CENTER" layoutX="307.0" layoutY="45.0" text="안녕하세요! 반갑습니다. 새로운 트레이너님" />
+      <Button fx:id="btnClose" layoutX="768.0" layoutY="3.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="64.0" text="종   료" />
+      <Button fx:id="btnBook" layoutX="46.0" layoutY="563.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="90.0" text="도   감" />
+      <Button fx:id="btnMyPoket" layoutX="227.0" layoutY="563.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="113.0" text="나만의 포켓몬" />
+      <Button fx:id="btnGlow" layoutX="515.0" layoutY="563.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="90.0" text="육   성" />
+      <Button fx:id="btnToday" layoutX="696.0" layoutY="563.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="104.0" text="포켓몬 영상" />
+      <ImageView fitHeight="51.0" fitWidth="104.0" layoutX="367.0" layoutY="548.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/나몰빼미.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="51.0" fitWidth="104.0" layoutX="452.0" layoutY="548.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/색다른%20나몰빼미.gif" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

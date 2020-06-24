@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="430.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RootController">
+   <children>
+      <ImageView disable="true" fitHeight="430.0" fitWidth="650.0">
+         <image>
+            <Image url="@../images/로그인창%20이미지.jpg" />
+         </image>
+      </ImageView>
+      <HBox alignment="CENTER" layoutX="-2.0" layoutY="325.0" prefHeight="43.0" prefWidth="650.0" spacing="20.0">
+         <children>
+            <Button fx:id="btnLogin" mnemonicParsing="false" text="로 그 인" />
+            <Button fx:id="btnExit" mnemonicParsing="false" text="종     료" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="3.0" layoutY="360.0" prefHeight="43.0" prefWidth="646.0" spacing="20.0">
+         <children>
+            <Button fx:id="btnUser" mnemonicParsing="false" text="회원가입" />
+            <Button fx:id="btnFind" mnemonicParsing="false" prefHeight="25.0" text="ID/PW 찾기">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="8.0" layoutY="239.0" prefHeight="43.0" prefWidth="609.0">
+         <children>
+            <Label prefHeight="30.0" text="아  이  디 :" />
+            <TextField fx:id="txtID" prefHeight="30.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="8.0" layoutY="282.0" prefHeight="43.0" prefWidth="614.0">
+         <children>
+            <Label prefHeight="30.0" text="패스워드 :" />
+            <PasswordField fx:id="pwfPW" prefHeight="30.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <ImageView layoutX="24.0" layoutY="280.0">
+         <image>
+            <Image url="@../images/윽우지%20움짤.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="78.0" fitWidth="64.0" layoutX="584.0" layoutY="291.0">
+         <image>
+            <Image url="@../images/윽우지%20움짤.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="43.0" fitWidth="34.0" layoutX="129.0" layoutY="238.0">
+         <image>
+            <Image url="@../images/윽우지%20움짤.gif" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
