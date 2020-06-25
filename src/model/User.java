@@ -8,7 +8,7 @@ public class User {
 	private String userPhone;
 	private String userNickName;
 	private String userImage;
-	
+
 	public User(String userID, String userPassword, String userName, String userEmail, String userPhone,
 			String userNickName, String userImage) {
 		super();
@@ -20,47 +20,28 @@ public class User {
 		this.userNickName = userNickName;
 		this.userImage = userImage;
 	}
-	
 
-
-
-	public User(String userID ,String userPassword, String userPhone) {
-		super();
+	public User(String userID, String userPassword, String userPhone) {
 		this.userID = userID;
 		this.userPassword = userPassword;
 		this.userPhone = userPhone;
 	}
 
-
 	public User(String userID, String userName, String userEmail, String userPhone) {
-		super();
 		this.userID = userID;
 		this.userName = userName;
 		this.userEmail = userEmail;
 		this.userPhone = userPhone;
 	}
-
-
-
-
+	
 	public User(String userName, String userEmail) {
-		super();
 		this.userName = userName;
 		this.userEmail = userEmail;
 	}
-
-
-
-
-	@Override
-	public String toString() {
-		return "User [userID=" + userID + ", userPassword=" + userPassword + ", userName=" + userName + ", userEmail="
-				+ userEmail + ", userPhone=" + userPhone + ", userNickName=" + userNickName + ", userImage=" + userImage
-				+ "]";
+	//닉네임 바꿀때 쓰는 생성자
+	public User(String userNickName) {
+		this.userNickName = userNickName;
 	}
-
-
-
 
 	public String getUserID() {
 		return userID;
@@ -117,6 +98,5 @@ public class User {
 	public void setUserImage(String userImage) {
 		this.userImage = userImage;
 	}
-	
-	
+
 }

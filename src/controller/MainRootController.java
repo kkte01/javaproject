@@ -1,6 +1,10 @@
 package controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -43,9 +47,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import model.Notice;
@@ -62,8 +68,6 @@ public class MainRootController implements Initializable {
 	private Label labelTrainer;
 	@FXML
 	private Button btnRandomPoket;
-	@FXML
-	private Button btnRandomName;
 	@FXML
 	private Button btnChangeName;
 	@FXML
@@ -91,6 +95,8 @@ public class MainRootController implements Initializable {
 	public MediaPlayer mp;
 	int i;
 	public File saveIcons;
+	public File selectFile;
+	public File userImagesFile;
 	public User userInfo;
 	PoketmonBook1 pkmBook1;
 	public int tableViewIndex;
@@ -99,6 +105,8 @@ public class MainRootController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// 이벤트 등록하기
+		// 유저 이미지를 저장하는 폴더 생성 함수
+		setUserImage();
 		// 화면에 유저닉네임 사진 보여주는 함수
 		loadUserInfomation();
 		// DB에 있는 내용을 가져오기
@@ -117,10 +125,24 @@ public class MainRootController implements Initializable {
 		setSaveIcons();
 		// 화면에 랜덤 포켓몬을 보여주는 이벤트 등록 및 핸들러 함수처리
 		btnRandomPoket.setOnAction(e -> loadRamdomPhoto(e));
-		
+		// 대표이미지 버튼 이벤트 등록 및 핸들러 함수처리
+		btnChangeImage.setOnAction(e -> handleBtnChageImage(e));
+		// 트레이너 이름 변경 버튼 이벤트 등록 및 핸들러 함수처리
+		btnChangeName.setOnAction(e -> handleBtnChageName(e));
+		// 종료버튼에 대한 이벤트 처리
+		btnClose.setOnAction(e-> stage.close());
 		
 	}
 
+	
+	// 유저 이미지를 저장하는 폴더 생성 함수
+	private void setUserImage() {
+		userImagesFile = new File("C:/userImages");
+		if(!userImagesFile.exists()){
+			userImagesFile.mkdir();
+		}	
+		
+	}
 
 	// 화면에 유저닉네임 사진 보여주는 함수
 	private void loadUserInfomation() {
@@ -372,7 +394,6 @@ public class MainRootController implements Initializable {
 		}
 		tblBook.setItems(obsPkmiList);
 		obsPkmiList.clear();
-		
 		totalLoadList();
 		
 		// 테이블 뷰를 선택했을경우 이벤트 등록 및 핸들러 함수처리
@@ -424,7 +445,6 @@ public class MainRootController implements Initializable {
 				lblInforNum.setText(String.valueOf(obsPkmiList.get(tableViewIndex).getNo()));
 				lblInforName.setText(obsPkmiList.get(tableViewIndex).getName());
 				lblInforImage.setImage(new Image("file:/C:/poketmon/"+obsPkmiList.get(tableViewIndex).getImage2()));
-				
 				imgInformation.setText(obsPkmiList.get(tableViewIndex).getInfo());
 				lblInforType1.setText(obsPkmiList.get(tableViewIndex).getType1());
 				lblInforType2.setText(obsPkmiList.get(tableViewIndex).getType2());
@@ -515,10 +535,129 @@ public class MainRootController implements Initializable {
 		}
 		speed.setData(speedList);
 		mainXYchart.getData().add(speed);
+	}
+	// 대표이미지 버튼에 대한 함수
+	private void handleBtnChageImage(ActionEvent e) {
+		//파일츄저 객체참조변수 생성
+		FileChooser fileChooser = new FileChooser();
+		//입력가능한 이미지 파일형식 입력
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif"));
+		selectFile = fileChooser.showOpenDialog(stage);
+		Connection con = null;
+		PreparedStatement ppsm = null;
+		String fileName = null;
 		
+		if(selectFile!=null) {
+			try {
+				fileName = "user"+System.currentTimeMillis()+selectFile.getName();
+				BufferedInputStream bis = null;
+				BufferedOutputStream bos = null;
+				
+					bis = new BufferedInputStream(new FileInputStream(selectFile));
+					bos = new BufferedOutputStream(new FileOutputStream(userImagesFile.getAbsolutePath() + "\\" + fileName));
+					int data = -1;
+					while((data = bis.read()) != -1) {
+						bos.write(data);
+						bos.flush();
+					}
+				}catch (Exception e2) {
+					Function.getAlert(2, "error", "이미지를 등록해주세요", e2.getMessage());
+				}
+			try {
+				String localURL = selectFile.toURI().toURL().toString();
+				Image image = new Image(localURL, false);
+				imgTrainer.setImage(image);
+				con =DBUtil.getConnection();
+				System.out.println(fileName);
+				String query ="update userTBL set userImage = ? where userPhone = ? ";
+				ppsm =con.prepareStatement(query);
+				System.out.println(query);
+				System.out.println(RootController.userLogin.getUserPhone());
+				ppsm.setString(1, fileName);
+				ppsm.setString(2, RootController.userLogin.getUserPhone());
+				
+				int value = ppsm.executeUpdate();
+				
+				if(value != 0 ) {
+					Function.getAlert(3, "사진 수정 완료", "사진 수정에 성공했습니다.", "사진 확인 요망");
+				}else {
+					throw new Exception("수정에 문제 있음");
+				}
+			} catch (Exception e1) {
+				Function.getAlert(2, "error", "사진파일을 가져올수 없습니다.", e1.getMessage());
+			}
+		}
 		
 	}
-
+	// 트레이너 이름 변경에 대한 함수
+	private void handleBtnChageName(ActionEvent e) {
+		Stage ChangeName = new Stage(StageStyle.UTILITY);
+		// modal or none
+		ChangeName.initModality(Modality.WINDOW_MODAL);
+		// 주종관계
+		ChangeName.initOwner(this.stage);
+		//파일 가져오기
+		Parent cn = null;
+		try {
+			cn = FXMLLoader.load(getClass().getResource("/view/changename.fxml"));
+			//이벤트 등록을 위한  객체 가져오기
+			TextField nickNamefield =(TextField) cn.lookup("#nickNamefield");
+			Button btnSameCheck = (Button) cn.lookup("#btnSameCheck");
+			Button btnChangeName = (Button) cn.lookup("#btnChargeName");
+			Button btnChangeClose = (Button) cn.lookup("#btnChangeClose");
+			// 취소 버튼에 대한 이벤트
+			btnChangeClose.setOnAction(event -> ChangeName.close());
+			//중복확인에 대한 이벤트 등록
+			btnSameCheck.setOnAction(event-> {
+				Connection con = null;
+				PreparedStatement ppsm = null;
+				ResultSet rs = null;
+				
+				try {
+					con = DBUtil.getConnection();
+					String query = "select userNickName from userTBL where userNickName = ?";
+					ppsm =con.prepareStatement(query);
+					ppsm.setString(1, nickNamefield.getText());
+					rs = ppsm.executeQuery();
+					
+					if(rs!=null && rs.isBeforeFirst()) {
+						Function.getAlert(2, "트레이너이름 중복확인", "중복된 트레이너이름 입니다", "다른 트레이너이름을 입력해주세요");
+					}else {
+						Function.getAlert(2, "트레이너이름 중복확인", "사용가능한 트레이너이름 입니다", "");
+					}
+				} catch (Exception e3) {
+					Function.getAlert(4, "error", "정보를 입력해주세요", "확인후 다시시도 해주세요.");
+				}
+			});
+			//바꾸기 버튼에 대한 이벤트 등록
+			btnChangeName.setOnAction(event-> {
+				Connection con = null;
+				PreparedStatement ppsm = null; 
+				try {
+					con = DBUtil.getConnection();
+					String query = "update userTBL set userNickName = ? where userID = ? ";
+					ppsm = con.prepareStatement(query);
+					ppsm.setString(1, nickNamefield.getText());
+					ppsm.setString(2, RootController.userLogin.getUserID());
+					int value = ppsm.executeUpdate();
+					if (value != 0 ) {
+						Function.getAlert(2, "성공", "닉네임 변경 성공 ", "새로운 닉네임을 확인해주세요.");
+						labelTrainer.setText(nickNamefield.getText());
+						ChangeName.close();
+					}
+				} catch (Exception e1) {
+					Function.getAlert(4, "error", "닉네임 변경 실패 ", "확인후 다시시도 해주세요.");
+				}
+			});
+			Scene s = new Scene(cn);
+			ChangeName.setScene(s);
+			ChangeName.setResizable(false);
+			ChangeName.show();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 
 }

@@ -112,8 +112,8 @@ public class RootController implements Initializable{
 				view = fxmlLoader.load();
 				scene = new Scene(view);
 				stage.setScene(scene);
-				
 				MainRootController mainController= fxmlLoader.getController();
+				mainController.stage = stage;
 				mainController.userInfo = userLogin;
 				this.stage.close();
 				stage.show();

@@ -19,7 +19,6 @@ public class AppMain extends Application{
 		RootController rootController = fxmlLoader.getController();
 		Scene scene = new Scene(root);
 		rootController.stage = primaryStage;
-		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		

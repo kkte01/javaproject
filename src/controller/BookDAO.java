@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Notice;
 import model.PoketmonBook1;
+import model.User;
 
 public class BookDAO {
 	ImageView imgView= new ImageView();
@@ -122,8 +123,8 @@ public class BookDAO {
 				
 					PoketmonBook1 poketmonBook1 = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3), 
 							rs.getString(4), rs.getString(5), rs.getString(7), 
-							rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13), 
-							rs.getString(14), rs.getString(15), rs.getString(16), rs.getString(18));
+							rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(13), rs.getString(14), 
+							rs.getString(15), rs.getString(16), rs.getString(17), rs.getString(18));
 					arrayList.add(poketmonBook1);
 			}
 			
@@ -177,5 +178,14 @@ public class BookDAO {
 		}
 		return arrayList;
 	}
-	
+	/*
+	 * //중복확인 체크에 대한 함수 public ArrayList<User> getUserNickNameLoadList(){ Connection
+	 * con = null; PreparedStatement ppsm = null; ResultSet rs = null;
+	 * ArrayList<User>arrayList = new ArrayList<User>(); try { con =
+	 * DBUtil.getConnection(); String query = "select userName from userTBL";
+	 * con.prepareStatement(query); ppsm.executeQuery(); while(rs.next()) { User
+	 * nickName = new User(rs.getString(1)); arrayList.add(nickName); } } catch
+	 * (Exception e1) { Function.getAlert(3, "닉네임 찾기 오류", "닉네임 중복확인 실패",
+	 * "문제사항 : "+e1.getMessage()); } return arrayList; }
+	 */
 }
