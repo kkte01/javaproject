@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="330.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="580.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/나만의%20포켓몬%20배경.jpg" />
+         </image>
+      </ImageView>
+      <TextField id="txtMyPkmName" layoutX="137.0" layoutY="29.0" />
+      <TextField id="txtMyPkmSAttack" layoutX="450.0" layoutY="139.0" />
+      <TextField id="txtMyPkmSDefense" layoutX="677.0" layoutY="139.0" />
+      <TextField id="txtMyPkmDefense" layoutX="676.0" layoutY="90.0" />
+      <TextField id="txtMyPkmAttack" layoutX="450.0" layoutY="90.0" />
+      <TextField id="txtMyPkmType2" layoutX="675.0" layoutY="38.0" />
+      <TextField id="txtMyPkmType1" layoutX="450.0" layoutY="39.0" />
+      <TextField id="txtMyPkmEvolve" layoutX="677.0" layoutY="242.0" promptText="O / X 로 입력해주세요" />
+      <TextField id="txtMyPkmTrait" layoutX="450.0" layoutY="242.0" />
+      <TextField id="txtMyPkmSpeed" layoutX="677.0" layoutY="192.0" />
+      <TextField id="txtMyPkmHP" layoutX="450.0" layoutY="192.0" />
+      <TextArea id="txaMyPkmInfo" layoutX="165.0" layoutY="374.0" prefHeight="87.0" prefWidth="709.0" />
+      <Label layoutX="55.0" layoutY="33.0" text="포켓몬 이름 :" />
+      <Label layoutX="388.0" layoutY="43.0" text="타입 1 :" />
+      <Label layoutX="617.0" layoutY="43.0" text="타입 2 :" />
+      <Label layoutX="388.0" layoutY="94.0" text="공격력 :" />
+      <Label layoutX="617.0" layoutY="94.0" text="방어력 :" />
+      <Label layoutX="376.0" layoutY="143.0" text="특수 공격 :" />
+      <Label layoutX="609.0" layoutY="143.0" text="특수 방어 :" />
+      <Label layoutX="388.0" layoutY="196.0" text="체 력 :" />
+      <Label layoutX="617.0" layoutY="196.0" text="스피드 :" />
+      <Label layoutX="388.0" layoutY="246.0" text="특 성 :" />
+      <Label layoutX="611.0" layoutY="246.0" text="진화 여부 :" />
+      <Label layoutX="619.0" layoutY="292.0" text="몸무게 :" />
+      <Label layoutX="388.0" layoutY="292.0" text="신 장 :" />
+      <TextField id="txtMyPkmHeight" layoutX="450.0" layoutY="288.0" promptText="m 단위로 입력됩니다" />
+      <TextField id="txtMyPkmWeight" layoutX="677.0" layoutY="288.0" promptText="kg 단위로 입력됩니다." />
+      <Button id="btnMyPkJoin" layoutX="333.0" layoutY="466.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="60.0" text="등  록" />
+      <Button id="btnMyPkcencle" layoutX="520.0" layoutY="466.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="60.0" text="취  소" />
+      <ImageView id="imgMyPkmImage1" fitHeight="237.0" fitWidth="252.0" layoutX="12.0" layoutY="87.0" pickOnBounds="true" />
+      <ImageView id="imgMyPkmImage2" fitHeight="87.0" fitWidth="104.0" layoutX="23.0" layoutY="384.0" pickOnBounds="true" />
+      <Button id="btnMyPkImage" layoutX="77.0" layoutY="321.0" mnemonicParsing="false" text="포켓몬 이미지 찾기" />
+      <Button id="btnMyPkIcon" layoutX="37.0" layoutY="478.0" mnemonicParsing="false" text="아이콘 찾기" />
+   </children>
+</AnchorPane>
