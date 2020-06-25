@@ -178,14 +178,5 @@ public class BookDAO {
 		}
 		return arrayList;
 	}
-	/*
-	 * //중복확인 체크에 대한 함수 public ArrayList<User> getUserNickNameLoadList(){ Connection
-	 * con = null; PreparedStatement ppsm = null; ResultSet rs = null;
-	 * ArrayList<User>arrayList = new ArrayList<User>(); try { con =
-	 * DBUtil.getConnection(); String query = "select userName from userTBL";
-	 * con.prepareStatement(query); ppsm.executeQuery(); while(rs.next()) { User
-	 * nickName = new User(rs.getString(1)); arrayList.add(nickName); } } catch
-	 * (Exception e1) { Function.getAlert(3, "닉네임 찾기 오류", "닉네임 중복확인 실패",
-	 * "문제사항 : "+e1.getMessage()); } return arrayList; }
-	 */
+	
 }

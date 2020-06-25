@@ -549,7 +549,8 @@ public class MainRootController implements Initializable {
 		Random random = new Random();
 		int ran = random.nextInt(arrayList.size());
 		PoketmonBook1 Random = arrayList.get(ran);
-		
+		// 이름 설정 이벤트
+		lblMonName.setText(Random.getName());
 		//사진 설정 이벤트
 		imgPoket.setImage(new Image("file:/C:/poketmon/"+Random.getImage()));
 		//수치관련 차트 이벤트
