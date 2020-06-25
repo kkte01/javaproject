@@ -422,6 +422,8 @@ public class MainRootController implements Initializable {
 				Label lblInforWeight = (Label) book.lookup("#lblInforWeight");
 				Label lblInforNum = (Label) book.lookup("#lblInforNum");
 				Label lblInforName = (Label) book.lookup("#lblInforName");
+				Label lblInforTotal = (Label) book.lookup("#lblInforTotal");
+				Button btnInforClose = (Button) book.lookup("#btnInforClose");
 				ImageView lblInforImage = (ImageView) book.lookup("#lblInforImage");
 				TextArea imgInformation = (TextArea) book.lookup("#imgInformation");
 				Node tabStatus = book.lookup("#tabStatus");
@@ -430,6 +432,8 @@ public class MainRootController implements Initializable {
 				XYChart statusXYChart = (XYChart) book.lookup("#statusXYChart");
 				ImageView imgInforEvolve = (ImageView) book.lookup("#imgInforEvolve");
 				// 이벤트 설정
+				// 나가기 버튼 이벤트 설정
+				btnInforClose.setOnAction(e1 ->stageBook.close());
 				BookDAO bookDAO2 = new BookDAO();
 				ArrayList<PoketmonBook1>arrayList1 = bookDAO2.getPoketmonBookLoadList();
 				
@@ -440,7 +444,6 @@ public class MainRootController implements Initializable {
 					PoketmonBook1 poketmonBook = arrayList1.get(i);
 					obsPkmiList.add(poketmonBook);
 				}
-				System.out.println(obsPkmiList.get(tableViewIndex).getImage2());
 				//이벤트설정
 				lblInforNum.setText(String.valueOf(obsPkmiList.get(tableViewIndex).getNo()));
 				lblInforName.setText(obsPkmiList.get(tableViewIndex).getName());
@@ -450,9 +453,78 @@ public class MainRootController implements Initializable {
 				lblInforType2.setText(obsPkmiList.get(tableViewIndex).getType2());
 				lblInforHeight.setText(obsPkmiList.get(tableViewIndex).getHeight());
 				lblInforWeight.setText(obsPkmiList.get(tableViewIndex).getWeight());
+				// tabStatus 이벤트설정
+					
+					XYChart.Series hp = new XYChart.Series();
+					hp.setName("HP");
+					ObservableList hpList = FXCollections.observableArrayList();
+					
+						hpList.add(new XYChart.Data(hp.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getHp())));
+					
+					hp.setData(hpList);
+					statusXYChart.getData().add(hp);
+					
+					XYChart.Series atk = new XYChart.Series();
+					atk.setName("Atk");
+					ObservableList atkList = FXCollections.observableArrayList();
+					
+						atkList.add(new XYChart.Data(atk.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getAtk())));
+					
+					atk.setData(atkList);
+					statusXYChart.getData().add(atk);
+					
+					XYChart.Series def = new XYChart.Series();
+					def.setName("Def");
+					ObservableList defList = FXCollections.observableArrayList();
+					
+						defList.add(new XYChart.Data(def.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getDef())));
+					
+					def.setData(defList);
+					statusXYChart.getData().add(def);
+					
+					XYChart.Series sAtk = new XYChart.Series();
+					sAtk.setName("SAtk");
+					ObservableList sAtkList = FXCollections.observableArrayList();
+					
+						sAtkList.add(new XYChart.Data(sAtk.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getsAtk())));
+					
+					sAtk.setData(sAtkList);
+					statusXYChart.getData().add(sAtk);
+					
+					XYChart.Series sDef = new XYChart.Series();
+					sDef.setName("SDef");
+					ObservableList	sDefList = FXCollections.observableArrayList();
+					
+						sDefList.add(new XYChart.Data(sDef.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getsDef())));
+					
+					sDef.setData(sDefList);
+					statusXYChart.getData().add(sDef);
+					
+					XYChart.Series speed = new XYChart.Series();
+					speed.setName("Spd");
+					ObservableList speedList = FXCollections.observableArrayList();
 				
-				
-				
+						speedList.add(new XYChart.Data(speed.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getSpeed())));
+					
+					speed.setData(speedList);
+					statusXYChart.getData().add(speed);
+					// 총 능력치 합을 구하는 함수
+					Connection con = null;
+					PreparedStatement ppsm = null;
+					ResultSet rs = null;
+					try {
+						con = DBUtil.getConnection();
+						String query = "select sum(pkmHP+pkmAttack+pkmDefense+pkmSAttack+pkmSDefense+pkmSpeed) from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+						ppsm =con.prepareStatement(query);
+						ppsm.setInt(1, obsPkmiList.get(tableViewIndex).getNo());
+						rs = ppsm.executeQuery();
+						while(rs.next()) {
+							int total =rs.getInt(1);
+							lblInforTotal.setText(String.valueOf(total));	
+						}
+					} catch (Exception e1) {
+						Function.getAlert(2, "총합 계산 오류", "총합 계산 실패", "문제사항 : "+e1.getMessage());
+					} 
 				Scene bookS = new Scene(book);
 				stageBook.setScene(bookS);
 				stageBook.show();
@@ -568,11 +640,8 @@ public class MainRootController implements Initializable {
 				Image image = new Image(localURL, false);
 				imgTrainer.setImage(image);
 				con =DBUtil.getConnection();
-				System.out.println(fileName);
 				String query ="update userTBL set userImage = ? where userPhone = ? ";
 				ppsm =con.prepareStatement(query);
-				System.out.println(query);
-				System.out.println(RootController.userLogin.getUserPhone());
 				ppsm.setString(1, fileName);
 				ppsm.setString(2, RootController.userLogin.getUserPhone());
 				

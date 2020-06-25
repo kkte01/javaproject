@@ -46,7 +46,7 @@
                               <Image url="@../informationimages/pkmStat.png" />
                            </image>
                         </ImageView>
-                        <BarChart layoutX="7.0" layoutY="67.0" prefHeight="193.0" prefWidth="321.0" style="-fx-background-color: white;">
+                        <BarChart id="statusXYChart" layoutX="7.0" layoutY="67.0" prefHeight="193.0" prefWidth="321.0" style="-fx-background-color: white;">
                            <xAxis>
                               <CategoryAxis />
                            </xAxis>
@@ -70,6 +70,6 @@
             </Tab>
         </tabs>
       </TabPane>
-      <Button layoutX="532.0" layoutY="3.0" mnemonicParsing="false" text="나 가 기" />
+      <Button id="btnInforClose" layoutX="532.0" layoutY="3.0" mnemonicParsing="false" text="나 가 기" />
    </children>
 </AnchorPane>

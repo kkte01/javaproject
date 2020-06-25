@@ -71,17 +71,6 @@ public class PoketmonBook1 {
 		this.evolve = evolve;
 		this.info = info;
 	}
-	
-	/*
-	 * public PoketmonBook1(int no, String image2, String name, String type1, String
-	 * hp, String atk, String def, String sAtk, String sDef, String speed, String
-	 * trait, String height, String weight, String evolve, String info) {
-	 * 
-	 * super(); this.no = no; this.image2 = image2; this.name = name; this.type1 =
-	 * type1; this.hp = hp; this.atk = atk; this.def = def; this.sAtk = sAtk;
-	 * this.sDef = sDef; this.speed = speed; this.trait = trait; this.height =
-	 * height; this.weight = weight; this.evolve = evolve; this.info = info; }
-	 */
 
 	//더블클릭한 도감에 들어가는 객체 생성자
 	public PoketmonBook1(int no, String image2, String name, String type1,
