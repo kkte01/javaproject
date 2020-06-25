@@ -258,36 +258,9 @@ public class MainRootController implements Initializable {
 
 	// 화면에 DB에 있는 공지사항을 보여주는 함수
 	private void showNotice() {
-		Connection con = null;
-		PreparedStatement ppsm = null;
-		ResultSet rs = null;
-		try {
-			con = DBUtil.getConnection();
-			// 실행할 쿼리문 설정
-			String query = "SELECT notice FROM noticeTBL";
-			// 쿼리문은 실행할 준비
-			ppsm = con.prepareStatement(query);
-			// 결과값을 받는다.
-			rs = ppsm.executeQuery();
-			// 그값을 ArrayList를 이용해 받는다.
-			Notice n = null;
-			while (rs.next()) {
-				n = new Notice(rs.getString(1));
-			}
-			labelNotice.setText(n.getNotice());
-		} catch (Exception e1) {
-			Function.getAlert(2, "공지사항오류", "공지사항의 내용 입력요망", e1.getMessage());
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (ppsm != null)
-					ppsm.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-			}
-		}
+		BookDAO bookDAO = new BookDAO();
+		ArrayList<Notice>arrayList = bookDAO.getNoticeLoadList();
+		labelNotice.setText(arrayList.get(0).getNotice());
 	}
 
 	// 포켓몬영상을 눌렀을 경우에 대한 함수
@@ -399,7 +372,9 @@ public class MainRootController implements Initializable {
 		}
 		tblBook.setItems(obsPkmiList);
 		obsPkmiList.clear();
+		
 		totalLoadList();
+		
 		// 테이블 뷰를 선택했을경우 이벤트 등록 및 핸들러 함수처리
 		tblBook.setOnMousePressed(event-> {
 			tableViewIndex=tblBook.getSelectionModel().getSelectedIndex();
@@ -436,6 +411,10 @@ public class MainRootController implements Initializable {
 				// 이벤트 설정
 				BookDAO bookDAO2 = new BookDAO();
 				ArrayList<PoketmonBook1>arrayList1 = bookDAO2.getPoketmonBookLoadList();
+				
+				//추가 다시지정
+				ObservableList<PoketmonBook1> obsPkmiList = FXCollections.observableArrayList();
+				
 				for(int i = 0; i < arrayList1.size(); i++ ) {
 					PoketmonBook1 poketmonBook = arrayList1.get(i);
 					obsPkmiList.add(poketmonBook);
@@ -445,6 +424,7 @@ public class MainRootController implements Initializable {
 				lblInforNum.setText(String.valueOf(obsPkmiList.get(tableViewIndex).getNo()));
 				lblInforName.setText(obsPkmiList.get(tableViewIndex).getName());
 				lblInforImage.setImage(new Image("file:/C:/poketmon/"+obsPkmiList.get(tableViewIndex).getImage2()));
+				
 				imgInformation.setText(obsPkmiList.get(tableViewIndex).getInfo());
 				lblInforType1.setText(obsPkmiList.get(tableViewIndex).getType1());
 				lblInforType2.setText(obsPkmiList.get(tableViewIndex).getType2());

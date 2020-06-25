@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Notice;
 import model.PoketmonBook1;
 
 public class BookDAO {
@@ -122,7 +123,7 @@ public class BookDAO {
 					PoketmonBook1 poketmonBook1 = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3), 
 							rs.getString(4), rs.getString(5), rs.getString(7), 
 							rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13), 
-							rs.getString(14), rs.getString(15), rs.getString(16), rs.getString(17));
+							rs.getString(14), rs.getString(15), rs.getString(16), rs.getString(18));
 					arrayList.add(poketmonBook1);
 			}
 			
@@ -142,4 +143,39 @@ public class BookDAO {
 		}
 		return arrayList;
 	}
+	//DB에 있는 공지사항 값을 가져오는 함수
+	public ArrayList<Notice> getNoticeLoadList(){
+		Connection con = null;
+		PreparedStatement ppsm = null;
+		ResultSet rs = null;
+		ArrayList<Notice> arrayList = new ArrayList<Notice>();
+		try {
+			con = DBUtil.getConnection();
+			// 실행할 쿼리문 설정
+			String query = "SELECT notice FROM noticeTBL";
+			// 쿼리문은 실행할 준비
+			ppsm = con.prepareStatement(query);
+			// 결과값을 받는다.
+			rs = ppsm.executeQuery();
+			// 그값을 ArrayList를 이용해 받는다.
+			while (rs.next()) {
+				Notice n = new Notice(rs.getString(1));
+				arrayList.add(n);
+			}
+		} catch (Exception e1) {
+			Function.getAlert(2, "공지사항오류", "공지사항의 내용 입력요망", e1.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ppsm != null)
+					ppsm.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return arrayList;
+	}
+	
 }
