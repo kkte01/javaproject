@@ -100,7 +100,9 @@ public class MainRootController implements Initializable {
 	public User userInfo;
 	PoketmonBook1 pkmBook1;
 	public int tableViewIndex;
-
+	public File selectFile2;
+	public File selectFile3;
+	private File poketmonImagesFile;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -131,9 +133,237 @@ public class MainRootController implements Initializable {
 		btnChangeName.setOnAction(e -> handleBtnChageName(e));
 		// 종료버튼에 대한 이벤트 처리
 		btnClose.setOnAction(e-> stage.close());
-		
+		// 나만의포켓몬 을 눌럿을 경우에 대한 이벤트
+		btnMyPoket.setOnAction(e -> handleBtnMyPoketAction(e));
+		setPoketmonImagePolderAciton();
 	}
 
+	private void setPoketmonImagePolderAciton() {
+		poketmonImagesFile = new File("C:/poketmon");
+		if (!poketmonImagesFile.exists()) {
+			poketmonImagesFile.mkdir();
+		}
+
+	}
+	
+	
+	@SuppressWarnings("resource")
+	private void handleBtnMyPoketAction(ActionEvent e) {
+		try {
+			// view 의 mypoketmon 을 사용자정의창 으로 실행하기
+			Parent root = FXMLLoader.load(getClass().getResource("/view/mypoketmon.fxml"));
+			Scene scene = new Scene(root);
+			// 스테이지 스타일 정하기
+			Stage myPoketmon = new Stage(StageStyle.UTILITY);
+			// 스테이지에 scene 셋팅하기
+			myPoketmon.setScene(scene);
+			// 주종관계 정하기
+			myPoketmon.initOwner(stage);
+
+			// view의 등록된 것들 가져오기
+			ImageView imagebig = (ImageView) root.lookup("#imgMyPkmImage1");
+			ImageView imageicon = (ImageView) root.lookup("#imgMyPkmImage2");
+
+			TextField MyPkmName = (TextField) root.lookup("#txtMyPkmName");
+			TextField MyPkmSAttack = (TextField) root.lookup("#txtMyPkmSAttack");
+			TextField MyPkmSDefense = (TextField) root.lookup("#txtMyPkmSDefense");
+			TextField MyPkmDefense = (TextField) root.lookup("#txtMyPkmDefense");
+			TextField MyPkmAttack = (TextField) root.lookup("#txtMyPkmAttack");
+			TextField MyPkmType1 = (TextField) root.lookup("#txtMyPkmType1");
+			TextField MyPkmType2 = (TextField) root.lookup("#txtMyPkmType2");
+			TextField MyPkmEvolve = (TextField) root.lookup("#txtMyPkmEvolve");
+			TextField MyPkmTrait = (TextField) root.lookup("#txtMyPkmTrait");
+			TextField MyPkmSpeed = (TextField) root.lookup("#txtMyPkmSpeed");
+			TextField MyPkmHP = (TextField) root.lookup("#txtMyPkmHP");
+			TextField MyPkmHeight = (TextField) root.lookup("#txtMyPkmHeight");
+			TextField MyPkmWeight = (TextField) root.lookup("#txtMyPkmWeight");
+			TextArea MyPkmInfo = (TextArea) root.lookup("#txaMyPkmInfo");
+
+			Button btnMyPkJoin = (Button) root.lookup("#btnMyPkJoin");
+			Button btnMyPkcencle = (Button) root.lookup("#btnMyPkcencle");
+			Button btnMyPkImage = (Button) root.lookup("#btnMyPkImage");
+			Button btnMyPkIcon = (Button) root.lookup("#btnMyPkIcon");
+			
+			
+			
+			myPoketmon.initModality(Modality.WINDOW_MODAL);
+			myPoketmon.setTitle("나만의 포켓몬 등록");
+			myPoketmon.show();
+
+			btnMyPkImage.setOnAction((event -> {
+				// 파일츄저 객체참조변수 생성
+				FileChooser fileChooser = new FileChooser();
+				// 입력가능한 이미지 파일형식 입력
+				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif"));
+
+				selectFile3 = fileChooser.showOpenDialog(stage);
+
+				if (selectFile3 != null) {
+					try {
+						String localURL = selectFile3.toURI().toURL().toString();
+						Image image = new Image(localURL, false);
+						imagebig.setImage(image);
+					} catch (Exception e1) {
+					}
+				}
+
+			}));
+
+			btnMyPkIcon.setOnAction((event -> {
+				// 파일츄저 객체참조변수 생성
+				FileChooser fileChooser = new FileChooser();
+				// 입력가능한 이미지 파일형식 입력
+				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif"));
+
+				selectFile2 = fileChooser.showOpenDialog(stage);
+
+				if (selectFile2 != null) {
+					try {
+						String localURL = selectFile2.toURI().toURL().toString();
+						Image image = new Image(localURL, false);
+						imageicon.setImage(image);
+					} catch (Exception e1) {
+						Function.getAlert(2, "error", "사진파일을 가져올수 없습니다.", e1.getMessage());
+					}
+				}
+
+			}));
+
+			btnMyPkcencle.setOnAction(e7-> myPoketmon.close());
+			
+			//각 txtFile에 빈칸이있으면 return null 을 반환해줘서 밑에 있는 등록버튼을 무효화시킴
+			
+			
+			
+			// 나만의 포켓몬 창의 정보저장 버튼 이벤트 등록
+			
+				
+			btnMyPkJoin.setOnAction(e2 -> {
+
+					if(MyPkmName.getText().trim().equals("")||MyPkmSAttack.getText().trim().equals("")||MyPkmSDefense.getText().trim().equals("")||
+							MyPkmDefense.getText().trim().equals("")||MyPkmAttack.getText().trim().equals("")||MyPkmType1.getText().trim().equals("")||
+							MyPkmType2.getText().trim().equals("")||MyPkmEvolve.getText().trim().equals("")||MyPkmTrait.getText().trim().equals("")||
+							MyPkmSpeed.getText().trim().equals("")||MyPkmHP.getText().trim().equals("")||MyPkmHeight.getText().trim().equals("")||
+							MyPkmWeight.getText().trim().equals("")||MyPkmInfo.getText().trim().equals("")) {
+						Function.getAlert(4, "error", "포켓몬들의 정보를 빠짐없이 등록해주세요!", "입력후 다시 등록해주세요");
+						return;
+					}
+					
+				
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				String fileName = null;
+				String fileName2 = null;
+				
+				//파일을 밀리초로 바꾸어서 폴더에 저장하는 함수
+				try {
+					
+					System.out.println("DDDD");
+					fileName = "user" + System.currentTimeMillis() + selectFile3.getName();
+					BufferedInputStream bis = null;
+					BufferedOutputStream bos = null;
+
+					bis = new BufferedInputStream(new FileInputStream(selectFile3));
+					bos = new BufferedOutputStream(
+							new FileOutputStream(poketmonImagesFile.getAbsolutePath() + "\\" + fileName));
+					int data = -1;
+					while ((data = bis.read()) != -1) {
+						bos.write(data);
+						bos.flush();
+					}
+				} catch (Exception e6) {
+					Function.getAlert(4, "error", "이미지를 등록해주세요!", "error code :"+e6.getMessage());
+					return;
+				}
+				
+				try {
+					fileName2 = "user" + System.currentTimeMillis() + selectFile2.getName();
+					BufferedInputStream bis = null;
+					BufferedOutputStream bos = null;
+
+					bis = new BufferedInputStream(new FileInputStream(selectFile2));
+					bos = new BufferedOutputStream(
+							new FileOutputStream(poketmonImagesFile.getAbsolutePath() + "\\" + fileName2));
+					int data = -1;
+					while ((data = bis.read()) != -1) {
+						bos.write(data);
+						bos.flush();
+					}
+				} catch (Exception e6) {
+					Function.getAlert(4, "error", "이미지를 등록해주세요!", "error code :"+e6.getMessage());
+					return;
+				}
+
+				try {
+					con = DBUtil.getConnection();
+					String query = "INSERT INTO bookTbl values(null,?,?,?,?,?)";
+					pstmt = con.prepareStatement(query);
+					// bookTBL 에 입력 정보값넣기
+					pstmt.setString(1, fileName);
+					pstmt.setString(2, MyPkmName.getText());
+					pstmt.setString(3, MyPkmType1.getText());
+					pstmt.setString(4, MyPkmType2.getText());
+					pstmt.setString(5, fileName2);
+					
+					int returnValue = pstmt.executeUpdate();
+
+					
+
+				} catch (Exception e1) {
+				}
+
+				Connection con2 = null;
+				PreparedStatement pstmt2 = null;
+				
+				try {
+					con = DBUtil.getConnection();
+					String query = "INSERT INTO poketmonTBL values(null,?,?,?,?,?,?,?,?,?,?,?)";
+					pstmt = con.prepareStatement(query);
+					
+					// PoketmonTBL 에 입력 정보값넣기
+					pstmt.setString(1, MyPkmHP.getText());
+					pstmt.setString(2, MyPkmAttack.getText());
+					pstmt.setString(3, MyPkmDefense.getText());
+					pstmt.setString(4, MyPkmSAttack.getText());
+					pstmt.setString(5, MyPkmSDefense.getText());
+					pstmt.setString(6, MyPkmSpeed.getText());
+					pstmt.setString(7, MyPkmTrait.getText());
+					pstmt.setString(8, MyPkmHeight.getText()+"m");
+					pstmt.setString(9, MyPkmWeight.getText()+"kg");
+					pstmt.setString(10, MyPkmEvolve.getText());
+					pstmt.setString(11, MyPkmInfo.getText());
+					
+					int returnValue = pstmt.executeUpdate();
+					
+					if (returnValue == 0) {
+					} else {
+						Function.getAlert(3, "Success", "나만의포켓몬 등록 성공", "도감에서 나만의 포켓몬을 확인해보세요.");
+						myPoketmon.close();
+					}
+				
+				} catch (Exception e1) {
+					Function.getAlert(4, "error", "2번 DB 연결실패!", "error code :" + e1.getMessage());
+				}
+			
+			});
+			
+			
+			
+			
+		} catch (IOException e1) {
+			Function.getAlert(4, "error", "나만의 포켓몬창 불러오기 오류", e1.getMessage());
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// 유저 이미지를 저장하는 폴더 생성 함수
 	private void setUserImage() {
