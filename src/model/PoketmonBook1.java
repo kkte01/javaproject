@@ -32,7 +32,7 @@ public class PoketmonBook1 {
 		this.type2 = type2;
 	}
 	
-
+	//테이블 뷰에 이미지를 넣는 생성자
 	public PoketmonBook1(int no, ImageView imageView, String name, String type1, String type2) {
 		this.no = no;
 		this.imageView = imageView;
@@ -95,7 +95,13 @@ public class PoketmonBook1 {
 		this.evolve = evolve;
 		this.info = info;
 	}
-
+	// 진화시 가져오는 생성자 함수
+	public PoketmonBook1(int no, String image2, String name , String evolve) {
+		this.no = no;
+		this.image2 = image2;
+		this.name = name;
+		this.evolve = evolve;
+	}
 
 	public int getNo() {
 		return no;

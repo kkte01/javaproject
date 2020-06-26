@@ -35,11 +35,12 @@ public class BookDAO {
 			rs = ppsm.executeQuery();
 			// ArrayList에 추가하기
 			arrayList = new ArrayList<PoketmonBook1>();
-			imgView.setFitHeight(80);
+			imgView.setFitHeight(100);
 			imgView.setFitWidth(150);
-			imgView.preserveRatioProperty();
+			//imgView.preserveRatioProperty();
 			while (rs.next()) {
 				imgView = new ImageView(new Image("file:/C:/icons/"+rs.getString(2)));
+				System.out.println(imgView.getImage().impl_getUrl());
 				PoketmonBook1 pkmBook1 = new PoketmonBook1(rs.getInt(1), imgView,
 						rs.getString(3), rs.getString(4),
 						rs.getString(5));

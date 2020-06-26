@@ -16,6 +16,9 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,6 +36,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -100,8 +104,8 @@ public class MainRootController implements Initializable {
 	public User userInfo;
 	PoketmonBook1 pkmBook1;
 	public int tableViewIndex;
-	public File selectFile2;
-	public File selectFile3;
+	public File iconSelectFile2;
+	public File poketSelectFile3;
 	private File poketmonImagesFile;
 
 	@Override
@@ -136,9 +140,13 @@ public class MainRootController implements Initializable {
 		btnClose.setOnAction(e -> stage.close());
 		// 나만의포켓몬 을 눌럿을 경우에 대한 이벤트
 		btnMyPoket.setOnAction(e -> handleBtnMyPoketAction(e));
+		// 포켓몬 이미지를 저장하는 함수
 		setPoketmonImagePolderAciton();
+		// 육성 버튼에 대한 이벤트 등록 및 핸들러 함수 처리
+		btnGlow.setOnAction(e -> handleBtnGlow(e));
 	}
 
+	// 포켓몬이미지를 저장폴더 생성 함수
 	private void setPoketmonImagePolderAciton() {
 		poketmonImagesFile = new File("C:/poketmon");
 		if (!poketmonImagesFile.exists()) {
@@ -147,6 +155,7 @@ public class MainRootController implements Initializable {
 
 	}
 
+	// 나만의 포켓몬등록에 관한 함수
 	private void handleBtnMyPoketAction(ActionEvent e) {
 		try {
 			// view 의 mypoketmon 을 사용자정의창 으로 실행하기
@@ -157,7 +166,7 @@ public class MainRootController implements Initializable {
 			// 스테이지에 scene 셋팅하기
 			myPoketmon.setScene(scene);
 			// 주종관계 정하기
-			myPoketmon.initOwner(stage);
+			myPoketmon.initOwner(this.stage);
 
 			// view의 등록된 것들 가져오기
 			ImageView imagebig = (ImageView) root.lookup("#imgMyPkmImage1");
@@ -186,18 +195,18 @@ public class MainRootController implements Initializable {
 			myPoketmon.initModality(Modality.WINDOW_MODAL);
 			myPoketmon.setTitle("나만의 포켓몬 등록");
 			myPoketmon.show();
-
+			// 포켓몬 이미지 등록버튼 이벤트설정
 			btnMyPkImage.setOnAction((event -> {
 				// 파일츄저 객체참조변수 생성
 				FileChooser fileChooser = new FileChooser();
 				// 입력가능한 이미지 파일형식 입력
 				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif"));
 
-				selectFile3 = fileChooser.showOpenDialog(stage);
+				poketSelectFile3 = fileChooser.showOpenDialog(stage);
 
-				if (selectFile3 != null) {
+				if (poketSelectFile3 != null) {
 					try {
-						String localURL = selectFile3.toURI().toURL().toString();
+						String localURL = poketSelectFile3.toURI().toURL().toString();
 						Image image = new Image(localURL, false);
 						imagebig.setImage(image);
 					} catch (Exception e1) {
@@ -205,18 +214,19 @@ public class MainRootController implements Initializable {
 				}
 
 			}));
-
+			// 포켓몬 아이콘 등록 이벤트 설정
 			btnMyPkIcon.setOnAction((event -> {
 				// 파일츄저 객체참조변수 생성
 				FileChooser fileChooser = new FileChooser();
 				// 입력가능한 이미지 파일형식 입력
 				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif"));
 
-				selectFile2 = fileChooser.showOpenDialog(stage);
+				iconSelectFile2 = fileChooser.showOpenDialog(stage);
 
-				if (selectFile2 != null) {
+				if (iconSelectFile2 != null) {
 					try {
-						String localURL = selectFile2.toURI().toURL().toString();
+						String localURL = iconSelectFile2.toURI().toURL().toString();
+						System.out.println();
 						Image image = new Image(localURL, false);
 						imageicon.setImage(image);
 					} catch (Exception e1) {
@@ -247,20 +257,20 @@ public class MainRootController implements Initializable {
 
 				Connection con = null;
 				PreparedStatement pstmt = null;
-				String fileName = null;
-				String fileName2 = null;
+				String poketFileName = null;
+				String iconFileName = null;
 
 				// 파일을 밀리초로 바꾸어서 폴더에 저장하는 함수
 				try {
 
 					System.out.println("DDDD");
-					fileName = "user" + System.currentTimeMillis() + selectFile3.getName();
+					poketFileName = "user" + System.currentTimeMillis() + poketSelectFile3.getName();
 					BufferedInputStream bis = null;
 					BufferedOutputStream bos = null;
 
-					bis = new BufferedInputStream(new FileInputStream(selectFile3));
+					bis = new BufferedInputStream(new FileInputStream(poketSelectFile3));
 					bos = new BufferedOutputStream(
-							new FileOutputStream(poketmonImagesFile.getAbsolutePath() + "\\" + fileName));
+							new FileOutputStream(poketmonImagesFile.getAbsolutePath() + "\\" + poketFileName));
 					int data = -1;
 					while ((data = bis.read()) != -1) {
 						bos.write(data);
@@ -272,13 +282,13 @@ public class MainRootController implements Initializable {
 				}
 
 				try {
-					fileName2 = "user" + System.currentTimeMillis() + selectFile2.getName();
+					iconFileName = "user" + System.currentTimeMillis() + iconSelectFile2.getName();
 					BufferedInputStream bis = null;
 					BufferedOutputStream bos = null;
 
-					bis = new BufferedInputStream(new FileInputStream(selectFile2));
+					bis = new BufferedInputStream(new FileInputStream(iconSelectFile2));
 					bos = new BufferedOutputStream(
-							new FileOutputStream(saveIcons.getAbsolutePath() + "\\" + fileName2));
+							new FileOutputStream(saveIcons.getAbsolutePath() + "\\" + iconFileName));
 					int data = -1;
 					while ((data = bis.read()) != -1) {
 						bos.write(data);
@@ -294,11 +304,11 @@ public class MainRootController implements Initializable {
 					String query = "INSERT INTO bookTbl values(null,?,?,?,?,?)";
 					pstmt = con.prepareStatement(query);
 					// bookTBL 에 입력 정보값넣기
-					pstmt.setString(1, fileName);
+					pstmt.setString(1, iconFileName);
 					pstmt.setString(2, MyPkmName.getText());
 					pstmt.setString(3, MyPkmType1.getText());
 					pstmt.setString(4, MyPkmType2.getText());
-					pstmt.setString(5, fileName2);
+					pstmt.setString(5, poketFileName);
 
 					int returnValue = pstmt.executeUpdate();
 
@@ -544,7 +554,6 @@ public class MainRootController implements Initializable {
 	// 포켓몬도감을 눌렀을 경우에 대한 함수
 	private void handleBtnBookAction(ActionEvent e) {
 		ArrayList<PoketmonBook1> arrayList = new ArrayList<PoketmonBook1>();
-
 		// 무대 설정
 		Stage pkmBook = new Stage(StageStyle.UTILITY);
 		// 모달 or 모달리스
@@ -555,206 +564,198 @@ public class MainRootController implements Initializable {
 		Parent p = null;
 		try {
 			p = FXMLLoader.load(getClass().getResource("/view/illustrated.fxml"));
-		} catch (IOException e1) {
-		}
-		Scene s = new Scene(p);
-		// 이벤트 설정을 위해 객체 가져오기
-		TableView tblBook = (TableView) p.lookup("#tblView");
-		Button btnOut = (Button) p.lookup("#btnIllustratedCencle");
+			Scene s = new Scene(p);
+			// 이벤트 설정을 위해 객체 가져오기
+			TableView tblBook = (TableView) p.lookup("#tblView");
+			Button btnOut = (Button) p.lookup("#btnIllustratedCencle");
 
-		// 이벤트 설정하기
-		// 돌아가기 버튼에 대한 이벤트 설정
-		btnOut.setOnAction(event -> pkmBook.close());
-		// 컬럼을 설정하는 함수
-		// 도감 컬럼에 들어가는 정보 입력
-		// 이름설정 및 사이즈 설정과 모델과 매칭시키기
-		TableColumn tbcNo = new TableColumn("No");
-		tbcNo.setMinWidth(100);
-		tbcNo.setStyle("-fx-alignmant: CENTER;");
-		tbcNo.setCellValueFactory(new PropertyValueFactory<>("no"));
+			// 이벤트 설정하기
+			// 돌아가기 버튼에 대한 이벤트 설정
+			btnOut.setOnAction(event -> pkmBook.close());
+			// 컬럼을 설정하는 함수
+			// 도감 컬럼에 들어가는 정보 입력
+			// 이름설정 및 사이즈 설정과 모델과 매칭시키기
+			TableColumn tbcNo = new TableColumn("No");
+			tbcNo.setMinWidth(100);
+			tbcNo.setStyle("-fx-alignmant: CENTER;");
+			tbcNo.setCellValueFactory(new PropertyValueFactory<>("no"));
 
-		TableColumn tbcImage = new TableColumn<>("Image");
-		tbcImage.setMinWidth(100);
-		tbcImage.setStyle("-fx-alignmant: CENTER;");
+			TableColumn tbcImage = new TableColumn<>("Image");
+			tbcImage.setMinWidth(100);
+			tbcImage.setStyle("-fx-alignmant: CENTER;");
+			tbcImage.setCellValueFactory(new PropertyValueFactory<>("imageView"));
 
-		tbcImage.setCellValueFactory(new PropertyValueFactory<>("imageView"));
+			TableColumn tbcName = new TableColumn("Name");
+			tbcName.setMinWidth(80);
+			tbcName.setStyle("-fx-alignmant: CENTER;");
+			tbcName.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-		TableColumn tbcName = new TableColumn("Name");
-		tbcName.setMinWidth(80);
-		tbcImage.setStyle("-fx-alignmant: CENTER;");
-		tbcName.setCellValueFactory(new PropertyValueFactory<>("name"));
+			TableColumn tbcType1 = new TableColumn("Type1");
+			tbcType1.setMinWidth(80);
+			tbcType1.setStyle("-fx-alignmant: CENTER;");
+			tbcType1.setCellValueFactory(new PropertyValueFactory<>("type1"));
 
-		TableColumn tbcType1 = new TableColumn("Type1");
-		tbcType1.setMinWidth(80);
-		tbcType1.setStyle("-fx-alignmant: CENTER;");
-		tbcType1.setCellValueFactory(new PropertyValueFactory<>("type1"));
+			TableColumn tbcType2 = new TableColumn("Type2");
+			tbcType2.setMinWidth(80);
+			tbcType2.setStyle("-fx-alignmant: CENTER;");
+			tbcType2.setCellValueFactory(new PropertyValueFactory<>("type2"));
 
-		TableColumn tbcType2 = new TableColumn("Type2");
-		tbcType2.setMinWidth(80);
-		tbcType2.setStyle("-fx-alignmant: CENTER;");
-		tbcType2.setCellValueFactory(new PropertyValueFactory<>("type2"));
+			tblBook.getColumns().addAll(tbcNo, tbcImage, tbcName, tbcType1, tbcType2);
+			// DB 연동
+			BookDAO bookDAO = new BookDAO();
+			arrayList = bookDAO.getTotalLoadList();
 
-		tblBook.getColumns().addAll(tbcNo, tbcImage, tbcName, tbcType1, tbcType2);
-		// DB 연동
-		BookDAO bookDAO = new BookDAO();
-		arrayList = bookDAO.getTotalLoadList();
-
-		for (int i = 0; i < arrayList.size(); i++) {
-			PoketmonBook1 poketmonBook = arrayList.get(i);
-			obsPkmiList.add(poketmonBook);
-		}
-		tblBook.setItems(obsPkmiList);
-		obsPkmiList.clear();
-		totalLoadList();
-
-		// 테이블 뷰를 선택했을경우 이벤트 등록 및 핸들러 함수처리
-		tblBook.setOnMousePressed(event -> {
-			tableViewIndex = tblBook.getSelectionModel().getSelectedIndex();
-		});
-		// 테이블뷰를 더블클릭했을경우에 이벤트
-		tblBook.setOnMouseClicked(event -> {
-			Stage stageBook = new Stage(StageStyle.UTILITY);
-			Parent book = null;
-
-			if (event.getClickCount() != 2) {
-				return;
+			for (int i = 0; i < arrayList.size(); i++) {
+				PoketmonBook1 poketmonBook = arrayList.get(i);
+				obsPkmiList.add(poketmonBook);
 			}
-			try {
-				// 화면 불러오기
-				book = FXMLLoader.load(getClass().getResource("/view/poketmonbook.fxml"));
-				// 모달 리스인지 모달인지 설정하기
-				stageBook.initModality(Modality.WINDOW_MODAL);
-				// 주종 관계 설정
-				stageBook.initOwner(pkmBook);
-				// 이벤트 설정을 위해 객체들 가져오기
-				Label lblInforType1 = (Label) book.lookup("#lblInforType1");
-				Label lblInforType2 = (Label) book.lookup("#lblInforType2");
-				Label lblInforHeight = (Label) book.lookup("#lblInforHeight");
-				Label lblInforWeight = (Label) book.lookup("#lblInforWeight");
-				Label lblInforNum = (Label) book.lookup("#lblInforNum");
-				Label lblInforName = (Label) book.lookup("#lblInforName");
-				Label lblInforTotal = (Label) book.lookup("#lblInforTotal");
-				Button btnInforClose = (Button) book.lookup("#btnInforClose");
-				ImageView lblInforImage = (ImageView) book.lookup("#lblInforImage");
-				TextArea imgInformation = (TextArea) book.lookup("#imgInformation");
-				Node tabStatus = book.lookup("#tabStatus");
-				Node tabEvolve = book.lookup("#tabEvolve");
-				Node tabType = book.lookup("#tabType");
-				XYChart statusXYChart = (XYChart) book.lookup("#statusXYChart");
-				ImageView imgInforEvolve = (ImageView) book.lookup("#imgInforEvolve");
-				// 이벤트 설정
-				// 나가기 버튼 이벤트 설정
-				btnInforClose.setOnAction(e1 -> stageBook.close());
-				BookDAO bookDAO2 = new BookDAO();
-				ArrayList<PoketmonBook1> arrayList1 = bookDAO2.getPoketmonBookLoadList();
+			tblBook.setItems(obsPkmiList);
+			obsPkmiList.clear();
+			totalLoadList();
 
-				// 추가 다시지정
-				ObservableList<PoketmonBook1> obsPkmiList = FXCollections.observableArrayList();
+			// 테이블 뷰를 선택했을경우 이벤트 등록 및 핸들러 함수처리
+			tblBook.setOnMousePressed(event -> {
+				tableViewIndex = tblBook.getSelectionModel().getSelectedIndex();
+			});
+			// 테이블뷰를 더블클릭했을경우에 이벤트
+			tblBook.setOnMouseClicked(event -> {
+				Stage stageBook = new Stage(StageStyle.UTILITY);
+				Parent book = null;
 
-				for (int i = 0; i < arrayList1.size(); i++) {
-					PoketmonBook1 poketmonBook = arrayList1.get(i);
-					obsPkmiList.add(poketmonBook);
+				if (event.getClickCount() != 2) {
+					return;
 				}
-				// 이벤트설정
-				lblInforNum.setText(String.valueOf(obsPkmiList.get(tableViewIndex).getNo()));
-				lblInforName.setText(obsPkmiList.get(tableViewIndex).getName());
-				lblInforImage.setImage(new Image("file:/C:/poketmon/" + obsPkmiList.get(tableViewIndex).getImage2()));
-				imgInformation.setText(obsPkmiList.get(tableViewIndex).getInfo());
-				lblInforType1.setText(obsPkmiList.get(tableViewIndex).getType1());
-				lblInforType2.setText(obsPkmiList.get(tableViewIndex).getType2());
-				lblInforHeight.setText(obsPkmiList.get(tableViewIndex).getHeight());
-				lblInforWeight.setText(obsPkmiList.get(tableViewIndex).getWeight());
-				// tabStatus 이벤트설정
 
-				XYChart.Series hp = new XYChart.Series();
-				hp.setName("HP");
-				ObservableList hpList = FXCollections.observableArrayList();
-
-				hpList.add(new XYChart.Data(hp.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getHp())));
-
-				hp.setData(hpList);
-				statusXYChart.getData().add(hp);
-
-				XYChart.Series atk = new XYChart.Series();
-				atk.setName("Atk");
-				ObservableList atkList = FXCollections.observableArrayList();
-
-				atkList.add(
-						new XYChart.Data(atk.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getAtk())));
-
-				atk.setData(atkList);
-				statusXYChart.getData().add(atk);
-
-				XYChart.Series def = new XYChart.Series();
-				def.setName("Def");
-				ObservableList defList = FXCollections.observableArrayList();
-
-				defList.add(
-						new XYChart.Data(def.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getDef())));
-
-				def.setData(defList);
-				statusXYChart.getData().add(def);
-
-				XYChart.Series sAtk = new XYChart.Series();
-				sAtk.setName("SAtk");
-				ObservableList sAtkList = FXCollections.observableArrayList();
-
-				sAtkList.add(
-						new XYChart.Data(sAtk.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getsAtk())));
-
-				sAtk.setData(sAtkList);
-				statusXYChart.getData().add(sAtk);
-
-				XYChart.Series sDef = new XYChart.Series();
-				sDef.setName("SDef");
-				ObservableList sDefList = FXCollections.observableArrayList();
-
-				sDefList.add(
-						new XYChart.Data(sDef.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getsDef())));
-
-				sDef.setData(sDefList);
-				statusXYChart.getData().add(sDef);
-
-				XYChart.Series speed = new XYChart.Series();
-				speed.setName("Spd");
-				ObservableList speedList = FXCollections.observableArrayList();
-
-				speedList.add(new XYChart.Data(speed.getName(),
-						Integer.parseInt(obsPkmiList.get(tableViewIndex).getSpeed())));
-
-				speed.setData(speedList);
-				statusXYChart.getData().add(speed);
-				// 총 능력치 합을 구하는 함수
-				Connection con = null;
-				PreparedStatement ppsm = null;
-				ResultSet rs = null;
 				try {
-					con = DBUtil.getConnection();
-					String query = "select sum(pkmHP+pkmAttack+pkmDefense+pkmSAttack+pkmSDefense+pkmSpeed) from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
-					ppsm = con.prepareStatement(query);
-					ppsm.setInt(1, obsPkmiList.get(tableViewIndex).getNo());
-					rs = ppsm.executeQuery();
-					while (rs.next()) {
-						int total = rs.getInt(1);
-						lblInforTotal.setText(String.valueOf(total));
+					// 화면 불러오기
+					book = FXMLLoader.load(getClass().getResource("/view/poketmonbook.fxml"));
+					// 모달 리스인지 모달인지 설정하기
+					stageBook.initModality(Modality.WINDOW_MODAL);
+					// 주종 관계 설정
+					stageBook.initOwner(pkmBook);
+					// 이벤트 설정을 위해 객체들 가져오기
+					Label lblInforType1 = (Label) book.lookup("#lblInforType1");
+					Label lblInforType2 = (Label) book.lookup("#lblInforType2");
+					Label lblInforHeight = (Label) book.lookup("#lblInforHeight");
+					Label lblInforWeight = (Label) book.lookup("#lblInforWeight");
+					Label lblInforNum = (Label) book.lookup("#lblInforNum");
+					Label lblInforName = (Label) book.lookup("#lblInforName");
+					Label lblInforTotal = (Label) book.lookup("#lblInforTotal");
+					Button btnInforClose = (Button) book.lookup("#btnInforClose");
+					ImageView lblInforImage = (ImageView) book.lookup("#lblInforImage");
+					TextArea imgInformation = (TextArea) book.lookup("#imgInformation");
+					Node tabStatus = book.lookup("#tabStatus");
+					Node tabEvolve = book.lookup("#tabEvolve");
+					Node tabType = book.lookup("#tabType");
+					XYChart statusXYChart = (XYChart) book.lookup("#statusXYChart");
+					ImageView imgInforEvolve = (ImageView) book.lookup("#imgInforEvolve");
+					// 이벤트 설정
+					// 나가기 버튼 이벤트 설정
+					btnInforClose.setOnAction(e1 -> stageBook.close());
+					BookDAO bookDAO2 = new BookDAO();
+					ArrayList<PoketmonBook1> arrayList1 = bookDAO2.getPoketmonBookLoadList();
+
+					// 추가 다시지정
+					ObservableList<PoketmonBook1> obsPkmiList = FXCollections.observableArrayList();
+
+					for (int i = 0; i < arrayList1.size(); i++) {
+						PoketmonBook1 poketmonBook = arrayList1.get(i);
+						obsPkmiList.add(poketmonBook);
 					}
-				} catch (Exception e1) {
-					Function.getAlert(2, "총합 계산 오류", "총합 계산 실패", "문제사항 : " + e1.getMessage());
+					// 이벤트설정
+					lblInforNum.setText(String.valueOf(obsPkmiList.get(tableViewIndex).getNo()));
+					lblInforName.setText(obsPkmiList.get(tableViewIndex).getName());
+					lblInforImage
+							.setImage(new Image("file:/C:/poketmon/" + obsPkmiList.get(tableViewIndex).getImage2()));
+					imgInformation.setText(obsPkmiList.get(tableViewIndex).getInfo());
+					lblInforType1.setText(obsPkmiList.get(tableViewIndex).getType1());
+					lblInforType2.setText(obsPkmiList.get(tableViewIndex).getType2());
+					lblInforHeight.setText(obsPkmiList.get(tableViewIndex).getHeight());
+					lblInforWeight.setText(obsPkmiList.get(tableViewIndex).getWeight());
+					// tabStatus 이벤트설정
+
+					XYChart.Series hp = new XYChart.Series();
+					hp.setName("HP");
+					ObservableList hpList = FXCollections.observableArrayList();
+					hpList.add(
+							new XYChart.Data(hp.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getHp())));
+					hp.setData(hpList);
+					statusXYChart.getData().add(hp);
+
+					XYChart.Series atk = new XYChart.Series();
+					atk.setName("Atk");
+					ObservableList atkList = FXCollections.observableArrayList();
+					atkList.add(new XYChart.Data(atk.getName(),
+							Integer.parseInt(obsPkmiList.get(tableViewIndex).getAtk())));
+					atk.setData(atkList);
+					statusXYChart.getData().add(atk);
+
+					XYChart.Series def = new XYChart.Series();
+					def.setName("Def");
+					ObservableList defList = FXCollections.observableArrayList();
+					defList.add(new XYChart.Data(def.getName(),
+							Integer.parseInt(obsPkmiList.get(tableViewIndex).getDef())));
+					def.setData(defList);
+					statusXYChart.getData().add(def);
+
+					XYChart.Series sAtk = new XYChart.Series();
+					sAtk.setName("SAtk");
+					ObservableList sAtkList = FXCollections.observableArrayList();
+					sAtkList.add(new XYChart.Data(sAtk.getName(),
+							Integer.parseInt(obsPkmiList.get(tableViewIndex).getsAtk())));
+
+					sAtk.setData(sAtkList);
+					statusXYChart.getData().add(sAtk);
+
+					XYChart.Series sDef = new XYChart.Series();
+					sDef.setName("SDef");
+					ObservableList sDefList = FXCollections.observableArrayList();
+					sDefList.add(new XYChart.Data(sDef.getName(),
+							Integer.parseInt(obsPkmiList.get(tableViewIndex).getsDef())));
+					sDef.setData(sDefList);
+					statusXYChart.getData().add(sDef);
+
+					XYChart.Series speed = new XYChart.Series();
+					speed.setName("Spd");
+					ObservableList speedList = FXCollections.observableArrayList();
+					speedList.add(new XYChart.Data(speed.getName(),
+							Integer.parseInt(obsPkmiList.get(tableViewIndex).getSpeed())));
+					speed.setData(speedList);
+					statusXYChart.getData().add(speed);
+
+					// 총 능력치 합을 구하는 함수
+					Connection con = null;
+					PreparedStatement ppsm = null;
+					ResultSet rs = null;
+					try {
+						con = DBUtil.getConnection();
+						String query = "select sum(pkmHP+pkmAttack+pkmDefense+pkmSAttack+pkmSDefense+pkmSpeed) from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+						ppsm = con.prepareStatement(query);
+						ppsm.setInt(1, obsPkmiList.get(tableViewIndex).getNo());
+						rs = ppsm.executeQuery();
+						while (rs.next()) {
+							int total = rs.getInt(1);
+							lblInforTotal.setText(String.valueOf(total));
+						}
+					} catch (Exception e1) {
+						Function.getAlert(2, "총합 계산 오류", "총합 계산 실패", "문제사항 : " + e1.getMessage());
+					}
+					Scene bookS = new Scene(book);
+					stageBook.setScene(bookS);
+					stageBook.show();
+				} catch (IOException e1) {
+					Function.getAlert(2, "화면 불러오기 오류", "화면 불러오기실패", "문제사항 : " + e1.getMessage());
 				}
-				Scene bookS = new Scene(book);
-				stageBook.setScene(bookS);
-				stageBook.show();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 
-		});
+			});
 
-		pkmBook.setScene(s);
-		pkmBook.setTitle("포켓몬도감");
-		pkmBook.setResizable(false);
-		pkmBook.show();
+			pkmBook.setScene(s);
+			pkmBook.setTitle("포켓몬도감");
+			pkmBook.setResizable(false);
+			pkmBook.show();
+		} catch (IOException e1) {
+
+		}
 
 	}
 
@@ -765,18 +766,18 @@ public class MainRootController implements Initializable {
 		ArrayList<PoketmonBook1> arrayList = bookDAO.getRandomJoinLoadList();
 		Random random = new Random();
 		int ran = random.nextInt(arrayList.size());
-		PoketmonBook1 Random = arrayList.get(ran);
+		PoketmonBook1 randomPoketmon = arrayList.get(ran);
 		// 이름 설정 이벤트
-		lblMonName.setText(Random.getName());
+		lblMonName.setText(randomPoketmon.getName());
 		// 사진 설정 이벤트
-		imgPoket.setImage(new Image("file:/C:/poketmon/" + Random.getImage()));
+		imgPoket.setImage(new Image("file:/C:/poketmon/" + randomPoketmon.getImage()));
 		// 수치관련 차트 이벤트
 		mainXYchart.getData().clear();
 		XYChart.Series hp = new XYChart.Series();
 		hp.setName("HP");
 		ObservableList hpList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			hpList.add(new XYChart.Data(hp.getName(), Integer.parseInt(Random.getHp())));
+			hpList.add(new XYChart.Data(hp.getName(), Integer.parseInt(randomPoketmon.getHp())));
 		}
 		hp.setData(hpList);
 		mainXYchart.getData().add(hp);
@@ -785,7 +786,7 @@ public class MainRootController implements Initializable {
 		atk.setName("Atk");
 		ObservableList atkList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			atkList.add(new XYChart.Data(atk.getName(), Integer.parseInt(Random.getAtk())));
+			atkList.add(new XYChart.Data(atk.getName(), Integer.parseInt(randomPoketmon.getAtk())));
 		}
 		atk.setData(atkList);
 		mainXYchart.getData().add(atk);
@@ -794,7 +795,7 @@ public class MainRootController implements Initializable {
 		def.setName("Def");
 		ObservableList defList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			defList.add(new XYChart.Data(def.getName(), Integer.parseInt(Random.getDef())));
+			defList.add(new XYChart.Data(def.getName(), Integer.parseInt(randomPoketmon.getDef())));
 		}
 		def.setData(defList);
 		mainXYchart.getData().add(def);
@@ -803,7 +804,7 @@ public class MainRootController implements Initializable {
 		sAtk.setName("SAtk");
 		ObservableList sAtkList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			sAtkList.add(new XYChart.Data(sAtk.getName(), Integer.parseInt(Random.getsAtk())));
+			sAtkList.add(new XYChart.Data(sAtk.getName(), Integer.parseInt(randomPoketmon.getsAtk())));
 		}
 		sAtk.setData(sAtkList);
 		mainXYchart.getData().add(sAtk);
@@ -812,7 +813,7 @@ public class MainRootController implements Initializable {
 		sDef.setName("SDef");
 		ObservableList sDefList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			sDefList.add(new XYChart.Data(sDef.getName(), Integer.parseInt(Random.getsDef())));
+			sDefList.add(new XYChart.Data(sDef.getName(), Integer.parseInt(randomPoketmon.getsDef())));
 		}
 		sDef.setData(sDefList);
 		mainXYchart.getData().add(sDef);
@@ -821,7 +822,7 @@ public class MainRootController implements Initializable {
 		speed.setName("Spd");
 		ObservableList speedList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			speedList.add(new XYChart.Data(speed.getName(), Integer.parseInt(Random.getSpeed())));
+			speedList.add(new XYChart.Data(speed.getName(), Integer.parseInt(randomPoketmon.getSpeed())));
 		}
 		speed.setData(speedList);
 		mainXYchart.getData().add(speed);
@@ -949,4 +950,187 @@ public class MainRootController implements Initializable {
 		}
 	}
 
+	// 육성 버튼에 대한 함수
+	private void handleBtnGlow(ActionEvent e) {
+		
+		MonsterEXP exp = new MonsterEXP();
+		ObservableList<PoketmonBook1> obsPkmiListGlow = FXCollections.observableArrayList();
+		
+		// 화면 설정
+		Stage glowStage = new Stage(StageStyle.UTILITY);
+		// set modal
+		glowStage.initModality(Modality.WINDOW_MODAL);
+		// set 주종관계
+		glowStage.initOwner(this.stage);
+		// 화면 fxml파일 불러오기
+		Parent promote = null;
+		try {
+			promote = FXMLLoader.load(getClass().getResource("/view/promote.fxml"));
+			// 이벤트 설정을 위한 객체를 가져오기
+			Label labelExpUserName = (Label) promote.lookup("#labelExpUserName");
+			Label imageExpPoketmonName = (Label) promote.lookup("#imageExpPoketmonName");
+			ImageView imgExpPoketmon = (ImageView) promote.lookup("#imgExpPoketmon");
+			ProgressBar progressBar = (ProgressBar) promote.lookup("#progressBar");
+			Button btnSelect = (Button) promote.lookup("#btnSelect");
+			Button btnExp1 = (Button) promote.lookup("#btnExp1");
+			Button btnExp2 = (Button) promote.lookup("#btnExp2");
+			Button btnExp3 = (Button) promote.lookup("#btnExp3");
+			Button btnExpExit = (Button) promote.lookup("#btnExpExit");
+			// 이벤트 설정하기
+			// 트레이너 이름 세팅
+			labelExpUserName.setText(RootController.userLogin.getUserNickName());
+			// 종료버튼 이벤트
+			btnExpExit.setOnAction(event -> glowStage.close());
+			// 원하는 포켓몬 설정 버튼 이벤트
+			btnSelect.setOnAction(event -> {
+				ArrayList<PoketmonBook1> arrayList = new ArrayList<PoketmonBook1>();
+				// 무대 설정
+				Stage pkmBook = new Stage(StageStyle.UTILITY);
+				// 모달 or 모달리스
+				pkmBook.initModality(Modality.WINDOW_MODAL);
+				// 주종관계
+				pkmBook.initOwner(stage);
+				// fxml 파일 불러오기
+				Parent p = null;
+				try {
+					p = FXMLLoader.load(getClass().getResource("/view/illustrated.fxml"));
+					Scene s = new Scene(p);
+					// 이벤트 설정을 위해 객체 가져오기
+					TableView tblBook = (TableView) p.lookup("#tblView");
+					Button btnOut = (Button) p.lookup("#btnIllustratedCencle");
+
+					// 이벤트 설정하기
+					// 돌아가기 버튼에 대한 이벤트 설정
+					btnOut.setOnAction(event1 -> pkmBook.close());
+					// 컬럼을 설정하는 함수
+					// 도감 컬럼에 들어가는 정보 입력
+					// 이름설정 및 사이즈 설정과 모델과 매칭시키기
+					TableColumn tbcNo = new TableColumn("No");
+					tbcNo.setMinWidth(100);
+					tbcNo.setStyle("-fx-alignmant: CENTER;");
+					tbcNo.setCellValueFactory(new PropertyValueFactory<>("no"));
+
+					TableColumn tbcImage = new TableColumn<>("Image");
+					tbcImage.setMinWidth(100);
+					tbcImage.setStyle("-fx-alignmant: CENTER;");
+					tbcImage.setCellValueFactory(new PropertyValueFactory<>("imageView"));
+
+					TableColumn tbcName = new TableColumn("Name");
+					tbcName.setMinWidth(80);
+					tbcName.setStyle("-fx-alignmant: CENTER;");
+					tbcName.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+					TableColumn tbcType1 = new TableColumn("Type1");
+					tbcType1.setMinWidth(80);
+					tbcType1.setStyle("-fx-alignmant: CENTER;");
+					tbcType1.setCellValueFactory(new PropertyValueFactory<>("type1"));
+
+					TableColumn tbcType2 = new TableColumn("Type2");
+					tbcType2.setMinWidth(80);
+					tbcType2.setStyle("-fx-alignmant: CENTER;");
+					tbcType2.setCellValueFactory(new PropertyValueFactory<>("type2"));
+
+					tblBook.getColumns().addAll(tbcNo, tbcImage, tbcName, tbcType1, tbcType2);
+					// DB 연동
+					BookDAO bookDAO = new BookDAO();
+					arrayList = bookDAO.getTotalLoadList();
+
+					for (int i = 0; i < arrayList.size(); i++) {
+						PoketmonBook1 poketmonBook = arrayList.get(i);
+						obsPkmiList.add(poketmonBook);
+					}
+					tblBook.setItems(obsPkmiList);
+					obsPkmiList.clear();
+					totalLoadList();
+
+					// 테이블 뷰를 선택했을경우 이벤트 등록 및 핸들러 함수처리
+					tblBook.setOnMousePressed(event1 -> {
+						tableViewIndex = tblBook.getSelectionModel().getSelectedIndex();
+					});
+					// 테이블뷰를 더블클릭했을경우에 이벤트
+					tblBook.setOnMouseClicked(event1 -> {
+						Stage stageBook = new Stage(StageStyle.UTILITY);
+						Parent book = null;
+						if (event1.getClickCount() != 2) {
+							return;
+						}
+						
+						BookDAO bookDAOGlow = new BookDAO();
+						ArrayList<PoketmonBook1>arrayListGlow =bookDAOGlow.getPoketmonBookLoadList();
+						for(int i =0; i<arrayListGlow.size(); i++) {
+							PoketmonBook1 glowPoket = arrayListGlow.get(i);
+							obsPkmiListGlow.add(glowPoket);
+						}
+						imageExpPoketmonName.setText(obsPkmiListGlow.get(tableViewIndex).getName());
+						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + obsPkmiListGlow.get(tableViewIndex).getImage2()));
+						pkmBook.close();
+					});
+
+					pkmBook.setScene(s);
+					pkmBook.setTitle("포켓몬도감");
+					pkmBook.setResizable(false);
+					pkmBook.show();
+				} catch (IOException e1) {
+				}
+				
+			});
+			
+			exp.setEXP(0.0);
+			exp.expProperty().addListener(new ChangeListener<Object>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+					progressBar.progressProperty().bind(exp.expProperty());
+				}
+				
+			});
+			
+			btnExp1.setOnAction(e1 -> {
+				exp.setEXP(exp.getEXP()+0.03);
+				});
+			btnExp2.setOnAction(e2 -> {
+				exp.setEXP(exp.getEXP()+0.06);
+				});
+			btnExp3.setOnAction(e3 -> {
+				exp.setEXP(exp.getEXP()+0.09);
+				System.out.println(obsPkmiListGlow.get(tableViewIndex).getEvolve());
+				System.out.println((obsPkmiListGlow.get(tableViewIndex).getNo())+1);
+				if(exp.getEXP() >=1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O")) {
+			 		Connection con = null;
+			 		PreparedStatement ppsm = null;
+			 		ResultSet rs = null;
+			 		try {
+						con = DBUtil.getConnection();
+						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+						ppsm = con.prepareStatement(query);
+						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo())+1);
+						rs  = ppsm.executeQuery();
+						ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
+						while(rs.next()) {
+							System.out.println(rs.getInt(1));
+							System.out.println(rs.getString(6));
+							PoketmonBook1 glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3), rs.getString(17));
+							//glownPoket.add(glownPoketmon);
+							imgExpPoketmon.setImage(new Image("file:/C:/poketmon/"+rs.getString(6)));
+							imageExpPoketmonName.setText(rs.getString(3));
+						}
+						exp.setEXP(0.0);
+						
+					} catch (Exception e4) {
+						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : "+e4.getMessage());
+						return;
+					}
+			 	} 
+				});
+			
+			
+			Scene s = new Scene(promote);
+			glowStage.setScene(s);
+			glowStage.show();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println(123152);
+	}
 }
