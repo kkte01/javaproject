@@ -40,7 +40,6 @@ public class BookDAO {
 			//imgView.preserveRatioProperty();
 			while (rs.next()) {
 				imgView = new ImageView(new Image("file:/C:/icons/"+rs.getString(2)));
-				System.out.println(imgView.getImage().impl_getUrl());
 				PoketmonBook1 pkmBook1 = new PoketmonBook1(rs.getInt(1), imgView,
 						rs.getString(3), rs.getString(4),
 						rs.getString(5));

@@ -7,11 +7,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class AppMain extends Application{
+public class AppMain extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/root.fxml"));
@@ -21,8 +21,7 @@ public class AppMain extends Application{
 		rootController.stage = primaryStage;
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		
+
 	}
-	
+
 }
