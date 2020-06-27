@@ -109,6 +109,7 @@ public class MainRootController implements Initializable {
 	private File poketmonImagesFile;
 	MonsterEXP exp = new MonsterEXP();
 	PoketmonBook1 glownPoketmon = null;
+	boolean evolveFlag = true;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -264,8 +265,6 @@ public class MainRootController implements Initializable {
 
 				// 파일을 밀리초로 바꾸어서 폴더에 저장하는 함수
 				try {
-
-					System.out.println("DDDD");
 					poketFileName = "user" + System.currentTimeMillis() + poketSelectFile3.getName();
 					BufferedInputStream bis = null;
 					BufferedOutputStream bos = null;
@@ -982,6 +981,8 @@ public class MainRootController implements Initializable {
 			labelExpUserName.setText(labelTrainer.getText());
 			// 종료버튼 이벤트
 			btnExpExit.setOnAction(event -> glowStage.close());
+			
+			
 			// 원하는 포켓몬 설정 버튼 이벤트
 			btnSelect.setOnAction(event -> {
 				ArrayList<PoketmonBook1> arrayList = new ArrayList<PoketmonBook1>();
@@ -1076,6 +1077,7 @@ public class MainRootController implements Initializable {
 			});
 
 			exp.setEXP(0.0);
+			
 			exp.expProperty().addListener(new ChangeListener<Object>() {
 
 				@Override
@@ -1090,19 +1092,27 @@ public class MainRootController implements Initializable {
 				setExpNoImageException(e1, imgExpPoketmon, 0.03);
 
 			});
+			
 			btnExp2.setOnAction(e2 -> {
 				setExpNoImageException(e2, imgExpPoketmon, 0.06);
 			});
+			
+			
+			
+			
 			btnExp3.setOnAction(e3 -> {
 				PoketmonBook1 glownPoketmon = null;
 				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
 				setExpNoImageException(e3, imgExpPoketmon, 0.09);
-				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O")) {
+				
+				
+				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
 					Connection con = null;
 					PreparedStatement ppsm = null;
 					ResultSet rs = null;
 					try {
 						con = DBUtil.getConnection();
+						
 						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
 						ppsm = con.prepareStatement(query);
 						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1);
@@ -1114,13 +1124,16 @@ public class MainRootController implements Initializable {
 						}
 						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + glownPoket.get(0).getImage2()));
 						imageExpPoketmonName.setText(glownPoket.get(0).getName());
+						
 						exp.setEXP(0.0);
+						
+						evolveFlag(false);
+						
 					} catch (Exception e4) {
 						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
 						return;
 					}
 				}
-				System.out.println(glownPoket.get(0).getEvolve());
 				
 				if (exp.getEXP() >= 1.0 && glownPoket.get(0).getEvolve().equals("O")) {
 					System.out.println(glownPoket.get(0).getNo());
@@ -1154,7 +1167,11 @@ public class MainRootController implements Initializable {
 			Function.getAlert(1, "육성 창 오류", "육성 창을 가져올수 없습니다.", "문제사항 : " + e1.getMessage());
 		}
 	}
-
+	// 진화여부를 파악하는 함수
+	private void evolveFlag(boolean flag) {
+		evolveFlag = flag;
+	}
+	// 이미지가 등록 여부에 대한 오류 파악 함수
 	private Event setExpNoImageException(Event event, ImageView image, double expValue) {
 		try {
 			if (image.getImage().toString().equals(null)) {
@@ -1165,6 +1182,7 @@ public class MainRootController implements Initializable {
 			exp.setEXP(0.0);
 			return event;
 		}
+		
 		exp.setEXP(exp.getEXP() + expValue);
 
 		return event;
