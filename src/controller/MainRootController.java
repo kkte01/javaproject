@@ -566,6 +566,7 @@ public class MainRootController implements Initializable {
 		try {
 			p = FXMLLoader.load(getClass().getResource("/view/illustrated.fxml"));
 			Scene s = new Scene(p);
+			s.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			// 이벤트 설정을 위해 객체 가져오기
 			TableView tblBook = (TableView) p.lookup("#tblView");
 			Button btnOut = (Button) p.lookup("#btnIllustratedCencle");
@@ -742,14 +743,18 @@ public class MainRootController implements Initializable {
 						Function.getAlert(2, "총합 계산 오류", "총합 계산 실패", "문제사항 : " + e1.getMessage());
 					}
 					Scene bookS = new Scene(book);
+//					bookS.getStylesheets().add(getClass().getResource("/application/main.css").toString());						
+					if(obsPkmiList.get(tableViewIndex).getType1().equals("불")) {
+						lblInforType1.setStyle("-fx-background-color : white;");
+						lblInforType1.setStyle("-fx-text-fill : white;");
+					}
 					stageBook.setScene(bookS);
 					stageBook.show();
 				} catch (IOException e1) {
 					Function.getAlert(2, "화면 불러오기 오류", "화면 불러오기실패", "문제사항 : " + e1.getMessage());
 				}
-
+				s.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			});
-
 			pkmBook.setScene(s);
 			pkmBook.setTitle("포켓몬도감");
 			pkmBook.setResizable(false);
