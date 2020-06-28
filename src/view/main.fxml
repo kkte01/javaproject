@@ -28,7 +28,7 @@
                   <Image url="@../../../../Desktop/image1.jpg" />
                </image>
             </ImageView>
-            <BarChart fx:id="mainXYchart" layoutX="276.0" layoutY="163.0" prefHeight="280.0" prefWidth="523.0">
+            <BarChart fx:id="mainXYchart" layoutX="276.0" layoutY="163.0" prefHeight="280.0" prefWidth="523.0" styleClass="barChart">
               <xAxis>
                 <CategoryAxis prefHeight="30.0" prefWidth="456.0" side="BOTTOM" />
               </xAxis>

@@ -18,6 +18,7 @@ public class AppMain extends Application {
 		Parent root = fxmlLoader.load();
 		RootController rootController = fxmlLoader.getController();
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 		rootController.stage = primaryStage;
 		primaryStage.setScene(scene);
 		primaryStage.show();

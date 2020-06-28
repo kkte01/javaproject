@@ -20,13 +20,18 @@
                               <Image url="@../informationimages/pkmInfo.png" />
                            </image>
                         </ImageView>
-                        <Label id="lblInforType1" alignment="CENTER" layoutX="343.0" layoutY="124.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-background-radius: 5;" />
-                        <Label id="lblInforType2" alignment="CENTER" layoutX="461.0" layoutY="124.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-background-radius: 5;" />
-                        <Label id="lblInforHeight" alignment="CENTER" layoutX="453.0" layoutY="167.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-background-radius: 5;" />
-                        <Label id="lblInforWeight" alignment="CENTER" layoutX="453.0" layoutY="201.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-background-radius: 5;" />
+                        <Label id="lblInforType1" alignment="CENTER" layoutX="343.0" layoutY="124.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
+                        <Label id="lblInforType2" alignment="CENTER" layoutX="461.0" layoutY="124.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
+                        <Label id="lblInforHeight" alignment="CENTER" layoutX="453.0" layoutY="167.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
+                        <Label id="lblInforWeight" alignment="CENTER" layoutX="453.0" layoutY="201.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
                         <TextArea id="imgInformation" layoutX="51.0" layoutY="261.0" prefHeight="94.0" prefWidth="498.0" />
+<<<<<<< HEAD
                         <Label id="lblInforName" alignment="CENTER" layoutX="386.0" layoutY="65.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: transparent; -fx-background-radius: 5;" />
                         <Label id="lblInforNum" alignment="CENTER" layoutX="301.0" layoutY="49.0" prefHeight="31.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-background-radius: 5;" />
+=======
+                        <Label id="lblInforName" alignment="CENTER" layoutX="386.0" layoutY="65.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: transparent; -fx-alignment: center;" styleClass="Label" />
+                        <Label id="lblInforNum" alignment="CENTER" layoutX="301.0" layoutY="49.0" prefHeight="31.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-alignment: center;" styleClass="Label" />
+>>>>>>> exp
                         <ImageView id="lblInforImage" fitHeight="150.0" fitWidth="184.0" layoutX="18.0" layoutY="65.0" pickOnBounds="true" />
                         <ImageView fitHeight="48.0" fitWidth="60.0" layoutX="251.0" layoutY="143.0" pickOnBounds="true">
                            <image>
