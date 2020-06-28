@@ -75,6 +75,11 @@ public class RootController implements Initializable{
 	}
 	//로그인버튼 이벤트등록 함수 핸들러등록
 	private void btnLoginAction(ActionEvent e) {
+		if(txtID.getText().trim().equals("")&&pwfPW.getText().trim().equals("")) {
+			Function.getAlert(4, "로그인 오류", "ID / PW 를 입력 해주세요","확인후 다시로그인 바랍니다.");
+			return;
+		}
+		
 		Connection con =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -311,6 +316,12 @@ public class RootController implements Initializable{
 		
 		//아이디 중복체크버튼 이벤트등록
 		btnCheckID.setOnAction(e2->{
+			if(txtID.getText().trim().equals("")) {
+				Function.getAlert(4, "error", "아이디를 입력해주세요!", "확인후 재시도 해주세요");
+				return;
+			}
+			
+			
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -372,10 +383,9 @@ public class RootController implements Initializable{
 				ResultSet rs = null;
 
 				try {
-					
-					
 					if(IDName.getText().trim().equals("")&&IDEmail.getText().trim().equals("")) {
 						Function.getAlert(4, "ID찾기 오류", "이름 이메일 핸드폰 을 입력하지 않았습니다.", "이름 과 이메일 을 확인후 다시 찾기 해주세요!");
+						return;
 					}
 					con = DBUtil.getConnection();
 					
@@ -431,11 +441,11 @@ public class RootController implements Initializable{
 				ResultSet rs = null;
 
 				try {
-					System.out.println("ㅗ");
 					con = DBUtil.getConnection();
 					
 					if(pwID.getText().trim().equals("")&&pwPhone.getText().trim().equals("")) {
 						Function.getAlert(4, "PW찾기 오류", "ID 또는 전화번호 입력하지 않았습니다.", "ID 와 전화번호 를 확인후 다시 찾기 해주세요!");
+						return;
 					}
 					
 					System.out.println("1");

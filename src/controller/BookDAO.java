@@ -40,13 +40,12 @@ public class BookDAO {
 			//imgView.preserveRatioProperty();
 			while (rs.next()) {
 				imgView = new ImageView(new Image("file:/C:/icons/"+rs.getString(2)));
-				System.out.println(imgView.getImage().impl_getUrl());
 				PoketmonBook1 pkmBook1 = new PoketmonBook1(rs.getInt(1), imgView,
 						rs.getString(3), rs.getString(4),
 						rs.getString(5));
 				arrayList.add(pkmBook1);
 			}
-		} catch (Exception e1) {
+		} catch (Exception e1) {	
 			Function.getAlert(2, "TotalLoadList 점검 요망", "TotalLoadList 문제 발생", "문제사항"+e1.getMessage());
 		}finally {
 				try {

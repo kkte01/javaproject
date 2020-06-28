@@ -226,7 +226,6 @@ public class MainRootController implements Initializable {
 				if (iconSelectFile2 != null) {
 					try {
 						String localURL = iconSelectFile2.toURI().toURL().toString();
-						System.out.println();
 						Image image = new Image(localURL, false);
 						imageicon.setImage(image);
 					} catch (Exception e1) {
@@ -262,8 +261,6 @@ public class MainRootController implements Initializable {
 
 				// 파일을 밀리초로 바꾸어서 폴더에 저장하는 함수
 				try {
-
-					System.out.println("DDDD");
 					poketFileName = "user" + System.currentTimeMillis() + poketSelectFile3.getName();
 					BufferedInputStream bis = null;
 					BufferedOutputStream bos = null;
@@ -1093,8 +1090,6 @@ public class MainRootController implements Initializable {
 				});
 			btnExp3.setOnAction(e3 -> {
 				exp.setEXP(exp.getEXP()+0.09);
-				System.out.println(obsPkmiListGlow.get(tableViewIndex).getEvolve());
-				System.out.println((obsPkmiListGlow.get(tableViewIndex).getNo())+1);
 				if(exp.getEXP() >=1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O")) {
 			 		Connection con = null;
 			 		PreparedStatement ppsm = null;
@@ -1131,6 +1126,5 @@ public class MainRootController implements Initializable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println(123152);
 	}
 }

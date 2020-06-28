@@ -1,0 +1,17 @@
+TextField{
+	-fx-background-color:#CFE3D5;
+}
+	
+PasswordField{
+	-fx-background-color:#CFE3D5;
+}
+
+Button{
+	-fx-button-color : white;
+}
+
+Label{
+	-fx-font-weight:bold;
+	-fx-font-familly:"Arial white";
+	
+}
