@@ -108,7 +108,7 @@ public class MainRootController implements Initializable {
 	public File poketSelectFile3;
 	private File poketmonImagesFile;
 	MonsterEXP exp = new MonsterEXP();
-	PoketmonBook1 glownPoketmon = null;
+	PoketmonBook1 glownPoketmon;
 	boolean evolveFlag = true;
 
 	@Override
@@ -682,32 +682,28 @@ public class MainRootController implements Initializable {
 					XYChart.Series hp = new XYChart.Series();
 					hp.setName("HP");
 					ObservableList hpList = FXCollections.observableArrayList();
-					hpList.add(
-							new XYChart.Data(hp.getName(), Integer.parseInt(obsPkmiList.get(tableViewIndex).getHp())));
+					hpList.add(new XYChart.Data("", Integer.parseInt(obsPkmiList.get(tableViewIndex).getHp())));
 					hp.setData(hpList);
 					statusXYChart.getData().add(hp);
 
 					XYChart.Series atk = new XYChart.Series();
 					atk.setName("Atk");
 					ObservableList atkList = FXCollections.observableArrayList();
-					atkList.add(new XYChart.Data(atk.getName(),
-							Integer.parseInt(obsPkmiList.get(tableViewIndex).getAtk())));
+					atkList.add(new XYChart.Data("", Integer.parseInt(obsPkmiList.get(tableViewIndex).getAtk())));
 					atk.setData(atkList);
 					statusXYChart.getData().add(atk);
 
 					XYChart.Series def = new XYChart.Series();
 					def.setName("Def");
 					ObservableList defList = FXCollections.observableArrayList();
-					defList.add(new XYChart.Data(def.getName(),
-							Integer.parseInt(obsPkmiList.get(tableViewIndex).getDef())));
+					defList.add(new XYChart.Data("", Integer.parseInt(obsPkmiList.get(tableViewIndex).getDef())));
 					def.setData(defList);
 					statusXYChart.getData().add(def);
 
 					XYChart.Series sAtk = new XYChart.Series();
 					sAtk.setName("SAtk");
 					ObservableList sAtkList = FXCollections.observableArrayList();
-					sAtkList.add(new XYChart.Data(sAtk.getName(),
-							Integer.parseInt(obsPkmiList.get(tableViewIndex).getsAtk())));
+					sAtkList.add(new XYChart.Data("", Integer.parseInt(obsPkmiList.get(tableViewIndex).getsAtk())));
 
 					sAtk.setData(sAtkList);
 					statusXYChart.getData().add(sAtk);
@@ -715,16 +711,14 @@ public class MainRootController implements Initializable {
 					XYChart.Series sDef = new XYChart.Series();
 					sDef.setName("SDef");
 					ObservableList sDefList = FXCollections.observableArrayList();
-					sDefList.add(new XYChart.Data(sDef.getName(),
-							Integer.parseInt(obsPkmiList.get(tableViewIndex).getsDef())));
+					sDefList.add(new XYChart.Data("", Integer.parseInt(obsPkmiList.get(tableViewIndex).getsDef())));
 					sDef.setData(sDefList);
 					statusXYChart.getData().add(sDef);
 
 					XYChart.Series speed = new XYChart.Series();
 					speed.setName("Spd");
 					ObservableList speedList = FXCollections.observableArrayList();
-					speedList.add(new XYChart.Data(speed.getName(),
-							Integer.parseInt(obsPkmiList.get(tableViewIndex).getSpeed())));
+					speedList.add(new XYChart.Data("", Integer.parseInt(obsPkmiList.get(tableViewIndex).getSpeed())));
 					speed.setData(speedList);
 					statusXYChart.getData().add(speed);
 
@@ -781,12 +775,13 @@ public class MainRootController implements Initializable {
 		// 사진 설정 이벤트
 		imgPoket.setImage(new Image("file:/C:/poketmon/" + randomPoketmon.getImage()));
 		// 수치관련 차트 이벤트
+
 		mainXYchart.getData().clear();
 		XYChart.Series hp = new XYChart.Series();
 		hp.setName("HP");
 		ObservableList hpList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			hpList.add(new XYChart.Data(hp.getName(), Integer.parseInt(randomPoketmon.getHp())));
+			hpList.add(new XYChart.Data("", Integer.parseInt(randomPoketmon.getHp())));
 		}
 		hp.setData(hpList);
 		mainXYchart.getData().add(hp);
@@ -795,7 +790,7 @@ public class MainRootController implements Initializable {
 		atk.setName("Atk");
 		ObservableList atkList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			atkList.add(new XYChart.Data(atk.getName(), Integer.parseInt(randomPoketmon.getAtk())));
+			atkList.add(new XYChart.Data("", Integer.parseInt(randomPoketmon.getAtk())));
 		}
 		atk.setData(atkList);
 		mainXYchart.getData().add(atk);
@@ -804,7 +799,7 @@ public class MainRootController implements Initializable {
 		def.setName("Def");
 		ObservableList defList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			defList.add(new XYChart.Data(def.getName(), Integer.parseInt(randomPoketmon.getDef())));
+			defList.add(new XYChart.Data("", Integer.parseInt(randomPoketmon.getDef())));
 		}
 		def.setData(defList);
 		mainXYchart.getData().add(def);
@@ -813,7 +808,7 @@ public class MainRootController implements Initializable {
 		sAtk.setName("SAtk");
 		ObservableList sAtkList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			sAtkList.add(new XYChart.Data(sAtk.getName(), Integer.parseInt(randomPoketmon.getsAtk())));
+			sAtkList.add(new XYChart.Data("", Integer.parseInt(randomPoketmon.getsAtk())));
 		}
 		sAtk.setData(sAtkList);
 		mainXYchart.getData().add(sAtk);
@@ -822,7 +817,7 @@ public class MainRootController implements Initializable {
 		sDef.setName("SDef");
 		ObservableList sDefList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			sDefList.add(new XYChart.Data(sDef.getName(), Integer.parseInt(randomPoketmon.getsDef())));
+			sDefList.add(new XYChart.Data("", Integer.parseInt(randomPoketmon.getsDef())));
 		}
 		sDef.setData(sDefList);
 		mainXYchart.getData().add(sDef);
@@ -831,7 +826,7 @@ public class MainRootController implements Initializable {
 		speed.setName("Spd");
 		ObservableList speedList = FXCollections.observableArrayList();
 		for (int i1 = 0; i1 < arrayList.size(); i1++) {
-			speedList.add(new XYChart.Data(speed.getName(), Integer.parseInt(randomPoketmon.getSpeed())));
+			speedList.add(new XYChart.Data("", Integer.parseInt(randomPoketmon.getSpeed())));
 		}
 		speed.setData(speedList);
 		mainXYchart.getData().add(speed);
@@ -991,8 +986,7 @@ public class MainRootController implements Initializable {
 			labelExpUserName.setText(labelTrainer.getText());
 			// 종료버튼 이벤트
 			btnExpExit.setOnAction(event -> glowStage.close());
-			
-			
+
 			// 원하는 포켓몬 설정 버튼 이벤트
 			btnSelect.setOnAction(event -> {
 				ArrayList<PoketmonBook1> arrayList = new ArrayList<PoketmonBook1>();
@@ -1090,7 +1084,7 @@ public class MainRootController implements Initializable {
 			});
 
 			exp.setEXP(0.0);
-			
+
 			exp.expProperty().addListener(new ChangeListener<Object>() {
 
 				@Override
@@ -1105,51 +1099,50 @@ public class MainRootController implements Initializable {
 				setExpNoImageException(e1, imgExpPoketmon, 0.03);
 
 			});
-			
+
 			btnExp2.setOnAction(e2 -> {
 				setExpNoImageException(e2, imgExpPoketmon, 0.06);
 			});
-			
-			
-			
-			
+
 			btnExp3.setOnAction(e3 -> {
 				PoketmonBook1 glownPoketmon = null;
 				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
 				setExpNoImageException(e3, imgExpPoketmon, 0.09);
-				
-				
+
 				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
+
 					Connection con = null;
 					PreparedStatement ppsm = null;
 					ResultSet rs = null;
 					try {
 						con = DBUtil.getConnection();
-						
+
 						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
 						ppsm = con.prepareStatement(query);
 						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1);
 						rs = ppsm.executeQuery();
 						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6),
-									rs.getString(3), rs.getString(17));
+							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+									rs.getString(17));
 							glownPoket.add(glownPoketmon);
 						}
+
 						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + glownPoket.get(0).getImage2()));
 						imageExpPoketmonName.setText(glownPoket.get(0).getName());
-						
+
 						exp.setEXP(0.0);
-						
+
 						evolveFlag(false);
-						
+
 					} catch (Exception e4) {
 						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
 						return;
 					}
+
 				}
-				
+
 				if (exp.getEXP() >= 1.0 && glownPoket.get(0).getEvolve().equals("O")) {
-					System.out.println(glownPoket.get(0).getNo());
+
 					Connection con = null;
 					PreparedStatement ppsm = null;
 					ResultSet rs = null;
@@ -1160,8 +1153,8 @@ public class MainRootController implements Initializable {
 						ppsm.setInt(1, (glownPoket.get(0).getNo()) + 1);
 						rs = ppsm.executeQuery();
 						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6),
-									rs.getString(3), rs.getString(17));
+							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+									rs.getString(17));
 							imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + rs.getString(6)));
 							imageExpPoketmonName.setText(rs.getString(3));
 						}
@@ -1180,10 +1173,17 @@ public class MainRootController implements Initializable {
 			Function.getAlert(1, "육성 창 오류", "육성 창을 가져올수 없습니다.", "문제사항 : " + e1.getMessage());
 		}
 	}
+
 	// 진화여부를 파악하는 함수
 	private void evolveFlag(boolean flag) {
 		evolveFlag = flag;
 	}
+
+	// 첫번째 진화에 대한 함수
+	private void firstEvolve() {
+
+	}
+
 	// 이미지가 등록 여부에 대한 오류 파악 함수
 	private Event setExpNoImageException(Event event, ImageView image, double expValue) {
 		try {
@@ -1195,9 +1195,7 @@ public class MainRootController implements Initializable {
 			exp.setEXP(0.0);
 			return event;
 		}
-		
 		exp.setEXP(exp.getEXP() + expValue);
-
 		return event;
 
 	}
