@@ -116,6 +116,8 @@ public class RootController implements Initializable{
 				Stage stage = new Stage();
 				view = fxmlLoader.load();
 				scene = new Scene(view);
+				//css스타일 입혀주기
+				scene.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 				stage.setScene(scene);
 				MainRootController mainController= fxmlLoader.getController();
 				mainController.stage = stage;
@@ -158,6 +160,8 @@ public class RootController implements Initializable{
 			Parent root = FXMLLoader.load(getClass().getResource("/view/user.fxml"));
 			//Scene 에 FXMLLoader 를가져오기
 			Scene scene = new Scene(root);
+			//css스타일 입혀주기
+			scene.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			//Stage 스타일정하기
 			Stage user = new Stage(StageStyle.UTILITY);
 			//스테이지 에 모달인지 모달리스인지 정하기
@@ -359,6 +363,8 @@ public class RootController implements Initializable{
 			//view/find.fxml 사용자 정의창 생성
 			Parent root = FXMLLoader.load(getClass().getResource("/view/find.fxml"));
 			Scene scene = new Scene(root);
+			//css스타일 입혀주기
+			scene.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			Stage find = new Stage(StageStyle.UTILITY);
 			find.setScene(scene);
 			find.initOwner(stage);
