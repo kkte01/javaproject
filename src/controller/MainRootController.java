@@ -647,7 +647,7 @@ public class MainRootController implements Initializable {
 					Label lblInforName = (Label) book.lookup("#lblInforName");
 					Label lblInforTotal = (Label) book.lookup("#lblInforTotal");
 					Button btnInforClose = (Button) book.lookup("#btnInforClose");
-					ImageView lblInforImage = (ImageView) book.lookup("#lblInforImage");
+					ImageView lblInforImage = (	ImageView) book.lookup("#lblInforImage");
 					TextArea imgInformation = (TextArea) book.lookup("#imgInformation");
 					Node tabStatus = book.lookup("#tabStatus");
 					Node tabEvolve = book.lookup("#tabEvolve");
