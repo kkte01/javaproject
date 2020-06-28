@@ -164,7 +164,7 @@ public class MainRootController implements Initializable {
 			// view 의 mypoketmon 을 사용자정의창 으로 실행하기
 			Parent root = FXMLLoader.load(getClass().getResource("/view/mypoketmon.fxml"));
 			Scene scene = new Scene(root);
-			//css스타일 입혀주기
+			// css스타일 입혀주기
 			scene.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			// 스테이지 스타일 정하기
 			Stage myPoketmon = new Stage(StageStyle.UTILITY);
@@ -544,7 +544,7 @@ public class MainRootController implements Initializable {
 				mp.stop();
 				pM.close();
 			});
-			//css스타일 입혀주기
+			// css스타일 입혀주기
 			s.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			pM.setScene(s);
 			pM.setTitle("포켓몬 미니극장");
@@ -647,7 +647,7 @@ public class MainRootController implements Initializable {
 					Label lblInforName = (Label) book.lookup("#lblInforName");
 					Label lblInforTotal = (Label) book.lookup("#lblInforTotal");
 					Button btnInforClose = (Button) book.lookup("#btnInforClose");
-					ImageView lblInforImage = (	ImageView) book.lookup("#lblInforImage");
+					ImageView lblInforImage = (ImageView) book.lookup("#lblInforImage");
 					TextArea imgInformation = (TextArea) book.lookup("#imgInformation");
 					Node tabStatus = book.lookup("#tabStatus");
 					Node tabEvolve = book.lookup("#tabEvolve");
@@ -741,7 +741,7 @@ public class MainRootController implements Initializable {
 					}
 					Scene bookS = new Scene(book);
 //					bookS.getStylesheets().add(getClass().getResource("/application/main.css").toString());						
-					if(obsPkmiList.get(tableViewIndex).getType1().equals("불")) {
+					if (obsPkmiList.get(tableViewIndex).getType1().equals("불")) {
 						lblInforType1.setStyle("-fx-background-color : white;");
 						lblInforType1.setStyle("-fx-text-fill : white;");
 					}
@@ -945,7 +945,7 @@ public class MainRootController implements Initializable {
 				}
 			});
 			Scene s = new Scene(cn);
-			//css스타일 입혀주기
+			// css스타일 입혀주기
 			s.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			ChangeName.setScene(s);
 			ChangeName.setResizable(false);
@@ -1001,7 +1001,7 @@ public class MainRootController implements Initializable {
 				try {
 					p = FXMLLoader.load(getClass().getResource("/view/illustrated.fxml"));
 					Scene s = new Scene(p);
-					//css스타일 입혀주기
+					// css스타일 입혀주기
 					s.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 					// 이벤트 설정을 위해 객체 가져오기
 					TableView tblBook = (TableView) p.lookup("#tblView");
@@ -1072,7 +1072,7 @@ public class MainRootController implements Initializable {
 								new Image("file:/C:/poketmon/" + obsPkmiListGlow.get(tableViewIndex).getImage2()));
 						pkmBook.close();
 					});
-					//css스타일 입혀주기
+					// css스타일 입혀주기
 					s.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 					pkmBook.setScene(s);
 					pkmBook.setTitle("포켓몬도감");
@@ -1097,17 +1097,133 @@ public class MainRootController implements Initializable {
 			// 버튼에 관한 이벤트 설정
 			btnExp1.setOnAction(e1 -> {
 				setExpNoImageException(e1, imgExpPoketmon, 0.03);
+				PoketmonBook1 glownPoketmon = null;
+				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
+
+				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
+
+					Connection con = null;
+					PreparedStatement ppsm = null;
+					ResultSet rs = null;
+					try {
+						con = DBUtil.getConnection();
+
+						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+						ppsm = con.prepareStatement(query);
+						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1);
+						rs = ppsm.executeQuery();
+						while (rs.next()) {
+							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+									rs.getString(17));
+							glownPoket.add(glownPoketmon);
+						}
+
+						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + glownPoket.get(0).getImage2()));
+						imageExpPoketmonName.setText(glownPoket.get(0).getName());
+
+						exp.setEXP(0.0);
+
+						evolveFlag(false);
+
+					} catch (Exception e4) {
+						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
+						return;
+					}
+
+				}
+
+				if (exp.getEXP() >= 1.0 && glownPoket.get(0).getEvolve().equals("O")) {
+
+					Connection con = null;
+					PreparedStatement ppsm = null;
+					ResultSet rs = null;
+					try {
+						con = DBUtil.getConnection();
+						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+						ppsm = con.prepareStatement(query);
+						ppsm.setInt(1, (glownPoket.get(0).getNo()) + 1);
+						rs = ppsm.executeQuery();
+						while (rs.next()) {
+							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+									rs.getString(17));
+							imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + rs.getString(6)));
+							imageExpPoketmonName.setText(rs.getString(3));
+						}
+						exp.setEXP(0.0);
+					} catch (Exception e4) {
+						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
+						return;
+					}
+				}
 
 			});
 
 			btnExp2.setOnAction(e2 -> {
 				setExpNoImageException(e2, imgExpPoketmon, 0.06);
+				PoketmonBook1 glownPoketmon = null;
+				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
+
+				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
+
+					Connection con = null;
+					PreparedStatement ppsm = null;
+					ResultSet rs = null;
+					try {
+						con = DBUtil.getConnection();
+
+						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+						ppsm = con.prepareStatement(query);
+						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1);
+						rs = ppsm.executeQuery();
+						while (rs.next()) {
+							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+									rs.getString(17));
+							glownPoket.add(glownPoketmon);
+						}
+
+						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + glownPoket.get(0).getImage2()));
+						imageExpPoketmonName.setText(glownPoket.get(0).getName());
+
+						exp.setEXP(0.0);
+
+						evolveFlag(false);
+
+					} catch (Exception e4) {
+						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
+						return;
+					}
+
+				}
+
+				if (exp.getEXP() >= 1.0 && glownPoket.get(0).getEvolve().equals("O")) {
+
+					Connection con = null;
+					PreparedStatement ppsm = null;
+					ResultSet rs = null;
+					try {
+						con = DBUtil.getConnection();
+						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+						ppsm = con.prepareStatement(query);
+						ppsm.setInt(1, (glownPoket.get(0).getNo()) + 1);
+						rs = ppsm.executeQuery();
+						while (rs.next()) {
+							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+									rs.getString(17));
+							imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + rs.getString(6)));
+							imageExpPoketmonName.setText(rs.getString(3));
+						}
+						exp.setEXP(0.0);
+					} catch (Exception e4) {
+						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
+						return;
+					}
+				}
 			});
 
 			btnExp3.setOnAction(e3 -> {
+				setExpNoImageException(e3, imgExpPoketmon, 0.09);
 				PoketmonBook1 glownPoketmon = null;
 				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
-				setExpNoImageException(e3, imgExpPoketmon, 0.09);
 
 				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
 
