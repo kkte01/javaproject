@@ -41,33 +41,24 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ImageView id="imgInforState" fitHeight="370.0" fitWidth="600.0" layoutY="1.0" pickOnBounds="true">
+                        <ImageView id="imgInforState" fitHeight="364.0" fitWidth="593.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true">
                            <image>
-                              <Image url="@../informationimages/pkmStat.png" />
+                              <Image url="@../informationimages/도감배경.png" />
                            </image>
                         </ImageView>
-                        <BarChart id="statusXYChart" layoutX="7.0" layoutY="67.0" prefHeight="193.0" prefWidth="321.0" style="-fx-background-color: white;">
+                        <BarChart id="statusXYChart" layoutX="10.0" layoutY="51.0" prefHeight="246.0" prefWidth="317.0" style="-fx-background-color: white;" styleClass="barChart">
                            <xAxis>
-                              <CategoryAxis />
+                              <CategoryAxis prefHeight="0.0" prefWidth="262.0" />
                            </xAxis>
                            <yAxis>
                               <NumberAxis />
                            </yAxis>
                         </BarChart>
-                        <Label id="lblInforTotal" alignment="CENTER" layoutX="256.0" layoutY="266.0" prefHeight="23.0" prefWidth="60.0" text="Label" />
+                        <Label id="lblInforTotal" alignment="CENTER" layoutX="519.0" layoutY="262.0" prefHeight="23.0" prefWidth="60.0" text="Label" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab id="tabEvolve" text="진 화 정 보">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ImageView id="imgInforEvolve" fitHeight="350.0" fitWidth="565.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
         </tabs>
       </TabPane>
       <Button id="btnInforClose" layoutX="532.0" layoutY="3.0" mnemonicParsing="false" text="나 가 기" />
