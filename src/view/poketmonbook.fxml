@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
@@ -20,19 +21,30 @@
                               <Image url="@../informationimages/pkmInfo.png" />
                            </image>
                         </ImageView>
-                        <Label id="lblInforType1" alignment="CENTER" layoutX="343.0" layoutY="124.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
-                        <Label id="lblInforType2" alignment="CENTER" layoutX="461.0" layoutY="124.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
                         <Label id="lblInforHeight" alignment="CENTER" layoutX="453.0" layoutY="167.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
                         <Label id="lblInforWeight" alignment="CENTER" layoutX="453.0" layoutY="201.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: white; -fx-alignment: center;" styleClass="Label" />
                         <TextArea id="imgInformation" layoutX="51.0" layoutY="261.0" prefHeight="94.0" prefWidth="498.0" />
-                        <Label id="lblInforName" alignment="CENTER" layoutX="386.0" layoutY="65.0" prefHeight="31.0" prefWidth="110.0" style="-fx-background-color: transparent; -fx-alignment: center;" styleClass="Label" />
-                        <Label id="lblInforNum" alignment="CENTER" layoutX="301.0" layoutY="49.0" prefHeight="31.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-alignment: center;" styleClass="Label" />
+                        <Label id="lblInforName" alignment="CENTER" layoutX="363.0" layoutY="65.0" prefHeight="31.0" prefWidth="173.0" style="-fx-background-color: transparent; -fx-alignment: center;" styleClass="Label" />
+                        <Label id="lblInforNum" alignment="CENTER" layoutX="301.0" layoutY="47.0" prefHeight="31.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-alignment: center;" styleClass="Label" />
                         <ImageView id="lblInforImage" fitHeight="150.0" fitWidth="184.0" layoutX="18.0" layoutY="65.0" pickOnBounds="true" />
                         <ImageView fitHeight="48.0" fitWidth="60.0" layoutX="251.0" layoutY="143.0" pickOnBounds="true">
                            <image>
                               <Image url="@../informationimages/mascot.gif" />
                            </image>
                         </ImageView>
+                        <HBox alignment="CENTER" layoutX="329.0" layoutY="118.0" prefHeight="41.0" prefWidth="257.0" spacing="5.0">
+                           <children>
+                              <Label id="lblInforType1" alignment="CENTER" prefHeight="37.0" prefWidth="120.0" styleClass="Label" />
+                              <Label id="lblInforType2" alignment="CENTER" prefHeight="31.0" prefWidth="120.0" styleClass="Label">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
                      </children>
                   </AnchorPane>
             </content>

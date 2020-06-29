@@ -255,7 +255,7 @@ public class MainRootController implements Initializable {
 						|| MyPkmTrait.getText().trim().equals("") || MyPkmSpeed.getText().trim().equals("")
 						|| MyPkmHP.getText().trim().equals("") || MyPkmHeight.getText().trim().equals("")
 						|| MyPkmWeight.getText().trim().equals("") || MyPkmInfo.getText().trim().equals("")) {
-					Function.getAlert(4, "error", "포켓몬들의 정보를 빠짐없이 등록해주세요!", "입력후 다시 등록해주세요");
+					Function.getAlert(4, "error", "포켓몬 정보를 빠짐없이 등록해주세요!", "입력후 다시 등록해주세요");
 					return;
 				}
 
@@ -448,8 +448,11 @@ public class MainRootController implements Initializable {
 					BookDAO noticeBook = new BookDAO();
 					int value = noticeBook.changeNoticeList(cmdtxtFieldNotice);
 					if(value != 0) {
-						labelNotice.setText(cmdtxtFieldNotice.getText());
-						Function.getAlert(3, "수정 완료", "공지사항 수정완료", "변경된 내용 확인요망");
+							labelNotice.setText(cmdtxtFieldNotice.getText());
+							Function.getAlert(3, "수정 완료", "공지사항 수정완료", "변경된 내용 확인요망");
+							cmd.close();
+							noti.close();
+							
 					}
 					/*
 					 * Connection con = null; PreparedStatement ppsm = null; try { con =
@@ -462,8 +465,6 @@ public class MainRootController implements Initializable {
 					 * (ppsm != null) ppsm.close(); if (con != null) con.close(); } catch
 					 * (SQLException e1) { } }
 					 */
-					cmd.close();
-					noti.close();
 				});
 
 				Scene sCmd = new Scene(pCmd);
@@ -630,6 +631,9 @@ public class MainRootController implements Initializable {
 					stageBook.initModality(Modality.WINDOW_MODAL);
 					// 주종 관계 설정
 					stageBook.initOwner(pkmBook);
+					//Scene 설정
+					Scene bookS = new Scene(book);
+					bookS.getStylesheets().add(getClass().getResource("/application/label.css").toString());
 					// 이벤트 설정을 위해 객체들 가져오기
 					Label lblInforType1 = (Label) book.lookup("#lblInforType1");
 					Label lblInforType2 = (Label) book.lookup("#lblInforType2");
@@ -647,11 +651,13 @@ public class MainRootController implements Initializable {
 					XYChart statusXYChart = (XYChart) book.lookup("#statusXYChart");
 					ImageView imgInforEvolve = (ImageView) book.lookup("#imgInforEvolve");
 					// 이벤트 설정
+					//이름 크기 조정
+					lblInforName.setStyle("-fx-font-size: 18; -fx-font-familly:Arial white;");
 					// 나가기 버튼 이벤트 설정
 					btnInforClose.setOnAction(e1 -> stageBook.close());
 					BookDAO bookDAO2 = new BookDAO();
 					ArrayList<PoketmonBook1> arrayList1 = bookDAO2.getPoketmonBookLoadList();
-
+					
 					// 추가 다시지정
 					ObservableList<PoketmonBook1> obsPkmiList = FXCollections.observableArrayList();
 
@@ -731,18 +737,37 @@ public class MainRootController implements Initializable {
 					} catch (Exception e1) {
 						Function.getAlert(2, "총합 계산 오류", "총합 계산 실패", "문제사항 : " + e1.getMessage());
 					}
-					Scene bookS = new Scene(book);
-//					bookS.getStylesheets().add(getClass().getResource("/application/main.css").toString());						
-					if (obsPkmiList.get(tableViewIndex).getType1().equals("불")) {
-						lblInforType1.setStyle("-fx-background-color : white;");
-						lblInforType1.setStyle("-fx-text-fill : white;");
+					
+					switch(obsPkmiList.get(tableViewIndex).getType1()) {
+					case"불": lblInforType1.setStyle("-fx-text-fill:white; -fx-background-color:orange; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;");	break;
+					case"물": lblInforType1.setStyle("-fx-text-fill:white; -fx-background-color:#5AAEFF; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+					case"풀": lblInforType1.setStyle("-fx-text-fill:white; -fx-background-color:#59DA50; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+					case"독": lblInforType1.setStyle("-fx-text-fill:white; -fx-background-color:#9253EB; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+					case"비행": lblInforType1.setStyle("-fx-text-fill:white; -fx-background-color:#79ABFF; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+					case"드래곤": lblInforType1.setStyle("-fx-text-fill:white; -fx-background-color:#2924BD; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+					case"전기": lblInforType1.setStyle("-fx-text-fill:white; -fx-background-color:#FFFF24; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
 					}
+					
+					if(obsPkmiList.get(tableViewIndex).getType2() != null) {
+						switch(obsPkmiList.get(tableViewIndex).getType2()) {
+						case"불": lblInforType2.setStyle("-fx-text-fill:white; -fx-background-color:orange; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;");	break;
+						case"물": lblInforType2.setStyle("-fx-text-fill:white; -fx-background-color:#5AAEFF; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+						case"풀": lblInforType2.setStyle("-fx-text-fill:white; -fx-background-color:#59DA50; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+						case"독": lblInforType2.setStyle("-fx-text-fill:white; -fx-background-color:#9253EB; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+						case"비행": lblInforType2.setStyle("-fx-text-fill:white; -fx-background-color:#79ABFF; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+						case"드래곤": lblInforType2.setStyle("-fx-text-fill:white; -fx-background-color:#2924BD; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+						case"전기": lblInforType2.setStyle("-fx-text-fill:white; -fx-background-color:#FFFF24; -fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 18; -fx-background-radius:10;"); break;
+						}
+						
+					}
+
+					
+					
 					stageBook.setScene(bookS);
 					stageBook.show();
 				} catch (IOException e1) {
 					Function.getAlert(2, "화면 불러오기 오류", "화면 불러오기실패", "문제사항 : " + e1.getMessage());
 				}
-				s.getStylesheets().add(getClass().getResource("/application/main.css").toString());
 			});
 			pkmBook.setScene(s);
 			pkmBook.setTitle("포켓몬도감");
@@ -892,14 +917,18 @@ public class MainRootController implements Initializable {
 			Button btnSameCheck = (Button) cn.lookup("#btnSameCheck");
 			Button btnChangeName = (Button) cn.lookup("#btnChargeName");
 			Button btnChangeClose = (Button) cn.lookup("#btnChangeClose");
+			
 			// 취소 버튼에 대한 이벤트
 			btnChangeClose.setOnAction(event -> ChangeName.close());
 			// 중복확인에 대한 이벤트 등록
 			btnSameCheck.setOnAction(event -> {
+				if(nickNamefield.getText().trim().equals("")) {
+					Function.getAlert(4, "error", "수정실패", "내용 확인후 다시시도 해주세요.");
+					return;
+				}
 				Connection con = null;
 				PreparedStatement ppsm = null;
 				ResultSet rs = null;
-
 				try {
 					con = DBUtil.getConnection();
 					String query = "select userNickName from userTBL where userNickName = ?";

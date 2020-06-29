@@ -185,6 +185,7 @@ public class BookDAO {
 		PreparedStatement ppsm = null;
 		int value = 0;
 		try {
+		if(!(textField.getText().trim().equals(""))) {
 			con = DBUtil.getConnection();
 			String query = "update noticeTBL set notice = ?";
 			// 쿼리문 실행할 준비
@@ -192,7 +193,9 @@ public class BookDAO {
 			// 값 매치시키기
 			ppsm.setString(1, textField.getText());
 			value = ppsm.executeUpdate();
-			
+			}else {
+				throw new Exception();
+			}
 		} catch (Exception e1) {
 			Function.getAlert(2, "수정 실패", "내용 확인 요망", "내용을 확인해주세요");
 		} finally {
