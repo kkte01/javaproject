@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Notice;
@@ -178,5 +179,31 @@ public class BookDAO {
 		}
 		return arrayList;
 	}
-	
+	//DB에 있는 공지사항 값을 변경하는 함수
+	public int changeNoticeList(TextField textField) {
+		Connection con = null;
+		PreparedStatement ppsm = null;
+		int value = 0;
+		try {
+			con = DBUtil.getConnection();
+			String query = "update noticeTBL set notice = ?";
+			// 쿼리문 실행할 준비
+			ppsm = con.prepareStatement(query);
+			// 값 매치시키기
+			ppsm.setString(1, textField.getText());
+			value = ppsm.executeUpdate();
+			
+		} catch (Exception e1) {
+			Function.getAlert(2, "수정 실패", "내용 확인 요망", "내용을 확인해주세요");
+		} finally {
+			try {
+				if (ppsm != null)
+					ppsm.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e1) {
+			}
+		}
+		return value;
+	}
 }

@@ -102,13 +102,13 @@ public class MainRootController implements Initializable {
 	public File selectFile;
 	public File userImagesFile;
 	public User userInfo;
-	PoketmonBook1 pkmBook1;
+	private PoketmonBook1 pkmBook1;
 	public int tableViewIndex;
 	public File iconSelectFile2;
 	public File poketSelectFile3;
 	private File poketmonImagesFile;
-	MonsterEXP exp = new MonsterEXP();
-	PoketmonBook1 glownPoketmon;
+	private MonsterEXP exp = new MonsterEXP();
+	private PoketmonBook1 glownPoketmon;
 	boolean evolveFlag = true;
 
 	@Override
@@ -445,31 +445,23 @@ public class MainRootController implements Initializable {
 				});
 				// 등록 버튼 이벤트
 				btnRegister.setOnAction(event2 -> {
-					Connection con = null;
-					PreparedStatement ppsm = null;
-					try {
-						con = DBUtil.getConnection();
-						String query = "update noticeTBL set notice = ?";
-						// 쿼리문 실행할 준비
-						ppsm = con.prepareStatement(query);
-						// 값 매치시키기
-						ppsm.setString(1, cmdtxtFieldNotice.getText());
-						int value = ppsm.executeUpdate();
-						if (value != 0) {
-							Function.getAlert(3, "수정 완료", "공지사항 수정완료", "변경된 내용 확인요망");
-							labelNotice.setText(cmdtxtFieldNotice.getText());
-						}
-					} catch (Exception e1) {
-						Function.getAlert(2, "수정 실패", "내용 확인 요망", "내용을 확인해주세요");
-					} finally {
-						try {
-							if (ppsm != null)
-								ppsm.close();
-							if (con != null)
-								con.close();
-						} catch (SQLException e1) {
-						}
+					BookDAO noticeBook = new BookDAO();
+					int value = noticeBook.changeNoticeList(cmdtxtFieldNotice);
+					if(value != 0) {
+						labelNotice.setText(cmdtxtFieldNotice.getText());
+						Function.getAlert(3, "수정 완료", "공지사항 수정완료", "변경된 내용 확인요망");
 					}
+					/*
+					 * Connection con = null; PreparedStatement ppsm = null; try { con =
+					 * DBUtil.getConnection(); String query = "update noticeTBL set notice = ?"; //
+					 * 쿼리문 실행할 준비 ppsm = con.prepareStatement(query); // 값 매치시키기 ppsm.setString(1,
+					 * cmdtxtFieldNotice.getText()); int value = ppsm.executeUpdate(); if (value !=
+					 * 0) { Function.getAlert(3, "수정 완료", "공지사항 수정완료", "변경된 내용 확인요망");
+					 * labelNotice.setText(cmdtxtFieldNotice.getText()); } } catch (Exception e1) {
+					 * Function.getAlert(3, "수정 완료", "공지사항 수정완료", "변경된 내용 확인요망");); } finally { try { if
+					 * (ppsm != null) ppsm.close(); if (con != null) con.close(); } catch
+					 * (SQLException e1) { } }
+					 */
 					cmd.close();
 					noti.close();
 				});
@@ -491,12 +483,12 @@ public class MainRootController implements Initializable {
 	// 라벨을 움직이는 함수
 	private void labelMoveAction() {
 		TranslateTransition t = new TranslateTransition();
-		Duration d = new Duration(9000);
+		Duration d = new Duration(15000);
 		Node n = labelNotice;
 		t.setNode(n);
 		t.setDuration(d);
-		t.setFromX(600);
-		t.setToX(-600);
+		t.setFromX(600+(labelNotice.getText().length())*50);
+		t.setToX(-900+(labelNotice.getText().length()));
 		t.setCycleCount(50000);
 		t.play();
 	}
@@ -985,10 +977,15 @@ public class MainRootController implements Initializable {
 			// 트레이너 이름 세팅
 			labelExpUserName.setText(labelTrainer.getText());
 			// 종료버튼 이벤트
-			btnExpExit.setOnAction(event -> glowStage.close());
+			btnExpExit.setOnAction(event -> {glowStage.close();
+				obsPkmiListGlow.clear();
+				evolveFlag(true);
+				});
 
 			// 원하는 포켓몬 설정 버튼 이벤트
 			btnSelect.setOnAction(event -> {
+				obsPkmiListGlow.clear();
+				evolveFlag(true);
 				ArrayList<PoketmonBook1> arrayList = new ArrayList<PoketmonBook1>();
 				// 무대 설정
 				Stage pkmBook = new Stage(StageStyle.UTILITY);
@@ -1057,6 +1054,7 @@ public class MainRootController implements Initializable {
 					});
 					// 테이블뷰를 더블클릭했을경우에 이벤트
 					tblBook.setOnMouseClicked(event1 -> {
+						
 						if (event1.getClickCount() != 2) {
 							return;
 						}
@@ -1067,6 +1065,7 @@ public class MainRootController implements Initializable {
 							PoketmonBook1 glowPoket = arrayListGlow.get(i);
 							obsPkmiListGlow.add(glowPoket);
 						}
+						
 						imageExpPoketmonName.setText(obsPkmiListGlow.get(tableViewIndex).getName());
 						imgExpPoketmon.setImage(
 								new Image("file:/C:/poketmon/" + obsPkmiListGlow.get(tableViewIndex).getImage2()));
@@ -1097,189 +1096,61 @@ public class MainRootController implements Initializable {
 			// 버튼에 관한 이벤트 설정
 			btnExp1.setOnAction(e1 -> {
 				setExpNoImageException(e1, imgExpPoketmon, 0.03);
-				PoketmonBook1 glownPoketmon = null;
-				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
-
-				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
-
-					Connection con = null;
-					PreparedStatement ppsm = null;
-					ResultSet rs = null;
-					try {
-						con = DBUtil.getConnection();
-
-						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
-						ppsm = con.prepareStatement(query);
-						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1);
-						rs = ppsm.executeQuery();
-						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
-									rs.getString(17));
-							glownPoket.add(glownPoketmon);
-						}
-
-						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + glownPoket.get(0).getImage2()));
-						imageExpPoketmonName.setText(glownPoket.get(0).getName());
-
-						exp.setEXP(0.0);
-
-						evolveFlag(false);
-
-					} catch (Exception e4) {
-						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
-						return;
-					}
-
-				}
-
-				if (exp.getEXP() >= 1.0 && glownPoket.get(0).getEvolve().equals("O")) {
-
-					Connection con = null;
-					PreparedStatement ppsm = null;
-					ResultSet rs = null;
-					try {
-						con = DBUtil.getConnection();
-						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
-						ppsm = con.prepareStatement(query);
-						ppsm.setInt(1, (glownPoket.get(0).getNo()) + 1);
-						rs = ppsm.executeQuery();
-						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
-									rs.getString(17));
-							imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + rs.getString(6)));
-							imageExpPoketmonName.setText(rs.getString(3));
-						}
-						exp.setEXP(0.0);
-					} catch (Exception e4) {
-						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
-						return;
-					}
-				}
+				poketmonEvolve(obsPkmiListGlow, imgExpPoketmon, imageExpPoketmonName);
 
 			});
 
 			btnExp2.setOnAction(e2 -> {
 				setExpNoImageException(e2, imgExpPoketmon, 0.06);
-				PoketmonBook1 glownPoketmon = null;
-				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
+				poketmonEvolve(obsPkmiListGlow, imgExpPoketmon, imageExpPoketmonName);
 
-				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
-
-					Connection con = null;
-					PreparedStatement ppsm = null;
-					ResultSet rs = null;
-					try {
-						con = DBUtil.getConnection();
-
-						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
-						ppsm = con.prepareStatement(query);
-						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1);
-						rs = ppsm.executeQuery();
-						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
-									rs.getString(17));
-							glownPoket.add(glownPoketmon);
-						}
-
-						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + glownPoket.get(0).getImage2()));
-						imageExpPoketmonName.setText(glownPoket.get(0).getName());
-
-						exp.setEXP(0.0);
-
-						evolveFlag(false);
-
-					} catch (Exception e4) {
-						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
-						return;
-					}
-
-				}
-
-				if (exp.getEXP() >= 1.0 && glownPoket.get(0).getEvolve().equals("O")) {
-
-					Connection con = null;
-					PreparedStatement ppsm = null;
-					ResultSet rs = null;
-					try {
-						con = DBUtil.getConnection();
-						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
-						ppsm = con.prepareStatement(query);
-						ppsm.setInt(1, (glownPoket.get(0).getNo()) + 1);
-						rs = ppsm.executeQuery();
-						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
-									rs.getString(17));
-							imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + rs.getString(6)));
-							imageExpPoketmonName.setText(rs.getString(3));
-						}
-						exp.setEXP(0.0);
-					} catch (Exception e4) {
-						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
-						return;
-					}
-				}
 			});
 
 			btnExp3.setOnAction(e3 -> {
 				setExpNoImageException(e3, imgExpPoketmon, 0.09);
-				PoketmonBook1 glownPoketmon = null;
-				ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
-
-				if (exp.getEXP() >= 1.0 && obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
-
-					Connection con = null;
-					PreparedStatement ppsm = null;
-					ResultSet rs = null;
-					try {
-						con = DBUtil.getConnection();
-
-						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
-						ppsm = con.prepareStatement(query);
-						ppsm.setInt(1, (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1);
-						rs = ppsm.executeQuery();
-						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
-									rs.getString(17));
-							glownPoket.add(glownPoketmon);
-						}
-
-						imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + glownPoket.get(0).getImage2()));
-						imageExpPoketmonName.setText(glownPoket.get(0).getName());
-
-						exp.setEXP(0.0);
-
-						evolveFlag(false);
-
-					} catch (Exception e4) {
-						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
-						return;
-					}
-
-				}
-
-				if (exp.getEXP() >= 1.0 && glownPoket.get(0).getEvolve().equals("O")) {
-
-					Connection con = null;
-					PreparedStatement ppsm = null;
-					ResultSet rs = null;
-					try {
-						con = DBUtil.getConnection();
-						String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
-						ppsm = con.prepareStatement(query);
-						ppsm.setInt(1, (glownPoket.get(0).getNo()) + 1);
-						rs = ppsm.executeQuery();
-						while (rs.next()) {
-							glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
-									rs.getString(17));
-							imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" + rs.getString(6)));
-							imageExpPoketmonName.setText(rs.getString(3));
-						}
-						exp.setEXP(0.0);
-					} catch (Exception e4) {
-						Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
-						return;
-					}
-				}
+				poketmonEvolve(obsPkmiListGlow, imgExpPoketmon, imageExpPoketmonName);
+				/*
+				 * ArrayList<PoketmonBook1> glownPoket = new ArrayList<PoketmonBook1>();
+				 * 
+				 * if (exp.getEXP() >= 1.0 &&
+				 * obsPkmiListGlow.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
+				 * 
+				 * Connection con = null; PreparedStatement ppsm = null; ResultSet rs = null;
+				 * try { con = DBUtil.getConnection();
+				 * 
+				 * String query =
+				 * "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?"
+				 * ; ppsm = con.prepareStatement(query); ppsm.setInt(1,
+				 * (obsPkmiListGlow.get(tableViewIndex).getNo()) + 1); rs = ppsm.executeQuery();
+				 * while (rs.next()) { glownPoketmon = new PoketmonBook1(rs.getInt(1),
+				 * rs.getString(6), rs.getString(3), rs.getString(17));
+				 * glownPoket.add(glownPoketmon); }
+				 * 
+				 * imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" +
+				 * glownPoketmon.getImage2()));
+				 * imageExpPoketmonName.setText(glownPoketmon.getName());
+				 * 
+				 * exp.setEXP(0.0);
+				 * 
+				 * evolveFlag(false);
+				 * 
+				 * } catch (Exception e4) { Function.getAlert(1, "진화 포켓몬 오류",
+				 * "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage()); return; }
+				 * 
+				 * }
+				 * 
+				 * if (exp.getEXP() >= 1.0 && glownPoketmon.getEvolve().equals("O")) {
+				 * Connection con = null; PreparedStatement ppsm = null; ResultSet rs = null;
+				 * try { con = DBUtil.getConnection(); String query =
+				 * "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?"
+				 * ; ppsm = con.prepareStatement(query); ppsm.setInt(1, (glownPoketmon.getNo())
+				 * + 1); rs = ppsm.executeQuery(); while (rs.next()) { glownPoketmon = new
+				 * PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+				 * rs.getString(17)); imgExpPoketmon.setImage(new Image("file:/C:/poketmon/" +
+				 * rs.getString(6))); imageExpPoketmonName.setText(rs.getString(3)); }
+				 * exp.setEXP(0.0); } catch (Exception e4) { Function.getAlert(1, "진화 포켓몬 오류",
+				 * "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage()); return; } }
+				 */
 			});
 
 			Scene s = new Scene(promote);
@@ -1295,9 +1166,67 @@ public class MainRootController implements Initializable {
 		evolveFlag = flag;
 	}
 
-	// 첫번째 진화에 대한 함수
-	private void firstEvolve() {
+	// 포켓몬 진화에 대한 함수
+	private void poketmonEvolve(ObservableList<PoketmonBook1>obsGlowList, ImageView imageView,Label label) {
+		
+		if (exp.getEXP() >= 1.0 && obsGlowList.get(tableViewIndex).getEvolve().equals("O") && evolveFlag) {
 
+			Connection con = null;
+			PreparedStatement ppsm = null;
+			ResultSet rs = null;
+			try {
+				con = DBUtil.getConnection();
+
+				String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+				ppsm = con.prepareStatement(query);
+				ppsm.setInt(1, (obsGlowList.get(tableViewIndex).getNo()) + 1);
+				rs = ppsm.executeQuery();
+				while (rs.next()) {
+					glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+							rs.getString(17));
+					
+				}
+
+				imageView.setImage(new Image("file:/C:/poketmon/" + glownPoketmon.getImage2()));
+				label.setText(glownPoketmon.getName());
+
+				exp.setEXP(0.0);
+
+				evolveFlag(false);
+
+			} catch (Exception e4) {
+				Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
+				return;
+			}
+
+		}
+		
+		if (exp.getEXP() >= 1.0 && glownPoketmon.getEvolve().equals("O")) {
+			Connection con = null;
+			PreparedStatement ppsm = null;
+			ResultSet rs = null;
+			try {
+				con = DBUtil.getConnection();
+				String query = "select * from bookTbl a inner join poketmonTBL b on a.pkmNum = b.pkmNUm where a.pkmNum = ?";
+				ppsm = con.prepareStatement(query);
+				ppsm.setInt(1, (glownPoketmon.getNo()) + 1);
+				rs = ppsm.executeQuery();
+				while (rs.next()) {
+					glownPoketmon = new PoketmonBook1(rs.getInt(1), rs.getString(6), rs.getString(3),
+							rs.getString(17));
+					imageView.setImage(new Image("file:/C:/poketmon/" + rs.getString(6)));
+					label.setText(rs.getString(3));
+				}
+				exp.setEXP(0.0);
+			} catch (Exception e4) {
+				Function.getAlert(1, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "문제사항 : " + e4.getMessage());
+				return;
+			}
+		}else if(exp.getEXP() >= 1.0 && glownPoketmon.getEvolve().equals("X")){
+			exp.setEXP(0.0);
+			Function.getAlert(2, "진화 포켓몬 오류", "진화정보를 가져올수 없습니다.", "더이상 진화를 할 수 없습니다.");
+		}
+		
 	}
 
 	// 이미지가 등록 여부에 대한 오류 파악 함수

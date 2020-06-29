@@ -13,7 +13,7 @@
             <Image url="@../images/육성창%20배경화면.jpg" />
          </image>
       </ImageView>
-      <ImageView id="imgExpPoketmon" fx:id="imgPoketmon" fitHeight="276.0" fitWidth="367.0" layoutX="68.0" layoutY="73.0" pickOnBounds="true" />
+      <ImageView id="imgExpPoketmon" fx:id="imgPoketmon" fitHeight="222.0" fitWidth="309.0" layoutX="98.0" layoutY="100.0" pickOnBounds="true" />
       <Label id="labelExpUserName" layoutX="87.0" layoutY="22.0" prefHeight="29.0" prefWidth="107.0" text="Label" />
       <Button id="btnExpExit" layoutX="76.0" layoutY="617.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="347.0" style="-fx-background-color: transparent;" text="종  료" />
       <Button id="btnExp1" layoutX="68.0" layoutY="491.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
