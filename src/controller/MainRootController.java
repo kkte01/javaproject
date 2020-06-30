@@ -35,6 +35,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
@@ -157,7 +158,7 @@ public class MainRootController implements Initializable {
 		}
 
 	}
-
+	
 	// 나만의 포켓몬등록에 관한 함수
 	private void handleBtnMyPoketAction(ActionEvent e) {
 		try {
@@ -176,7 +177,7 @@ public class MainRootController implements Initializable {
 			// view의 등록된 것들 가져오기
 			ImageView imagebig = (ImageView) root.lookup("#imgMyPkmImage1");
 			ImageView imageicon = (ImageView) root.lookup("#imgMyPkmImage2");
-
+			
 			TextField MyPkmName = (TextField) root.lookup("#txtMyPkmName");
 			TextField MyPkmSAttack = (TextField) root.lookup("#txtMyPkmSAttack");
 			TextField MyPkmSDefense = (TextField) root.lookup("#txtMyPkmSDefense");
@@ -184,7 +185,7 @@ public class MainRootController implements Initializable {
 			TextField MyPkmAttack = (TextField) root.lookup("#txtMyPkmAttack");
 			TextField MyPkmType1 = (TextField) root.lookup("#txtMyPkmType1");
 			TextField MyPkmType2 = (TextField) root.lookup("#txtMyPkmType2");
-			TextField MyPkmEvolve = (TextField) root.lookup("#txtMyPkmEvolve");
+			ComboBox MyPkmEvolve = (ComboBox) root.lookup("#txtMyPkmEvolve");
 			TextField MyPkmTrait = (TextField) root.lookup("#txtMyPkmTrait");
 			TextField MyPkmSpeed = (TextField) root.lookup("#txtMyPkmSpeed");
 			TextField MyPkmHP = (TextField) root.lookup("#txtMyPkmHP");
@@ -196,10 +197,14 @@ public class MainRootController implements Initializable {
 			Button btnMyPkcencle = (Button) root.lookup("#btnMyPkcencle");
 			Button btnMyPkImage = (Button) root.lookup("#btnMyPkImage");
 			Button btnMyPkIcon = (Button) root.lookup("#btnMyPkIcon");
-
+			
 			myPoketmon.initModality(Modality.WINDOW_MODAL);
 			myPoketmon.setTitle("나만의 포켓몬 등록");
 			myPoketmon.show();
+			//콤보박스 초기화
+			ObservableList<String> evolvedList = FXCollections.observableArrayList();
+			evolvedList.addAll("O","X");
+			MyPkmEvolve.setItems(evolvedList);
 			// 포켓몬 이미지 등록버튼 이벤트설정
 			btnMyPkImage.setOnAction((event -> {
 				// 파일츄저 객체참조변수 생성
@@ -251,7 +256,7 @@ public class MainRootController implements Initializable {
 				if (MyPkmName.getText().trim().equals("") || MyPkmSAttack.getText().trim().equals("")
 						|| MyPkmSDefense.getText().trim().equals("") || MyPkmDefense.getText().trim().equals("")
 						|| MyPkmAttack.getText().trim().equals("") || MyPkmType1.getText().trim().equals("")
-						|| MyPkmType2.getText().trim().equals("") || MyPkmEvolve.getText().trim().equals("")
+						|| MyPkmType2.getText().trim().equals("") || MyPkmEvolve.getSelectionModel().getSelectedItem().equals("")
 						|| MyPkmTrait.getText().trim().equals("") || MyPkmSpeed.getText().trim().equals("")
 						|| MyPkmHP.getText().trim().equals("") || MyPkmHeight.getText().trim().equals("")
 						|| MyPkmWeight.getText().trim().equals("") || MyPkmInfo.getText().trim().equals("")) {
@@ -335,7 +340,7 @@ public class MainRootController implements Initializable {
 					pstmt.setString(7, MyPkmTrait.getText());
 					pstmt.setString(8, MyPkmHeight.getText() + "m");
 					pstmt.setString(9, MyPkmWeight.getText() + "kg");
-					pstmt.setString(10, MyPkmEvolve.getText());
+					pstmt.setString(10, MyPkmEvolve.getSelectionModel().getSelectedItem().toString());
 					pstmt.setString(11, MyPkmInfo.getText());
 
 					int returnValue = pstmt.executeUpdate();

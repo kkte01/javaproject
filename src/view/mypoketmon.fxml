@@ -21,7 +21,6 @@
       <TextField id="txtMyPkmAttack" layoutX="450.0" layoutY="90.0" />
       <TextField id="txtMyPkmType2" layoutX="675.0" layoutY="38.0" />
       <TextField id="txtMyPkmType1" layoutX="450.0" layoutY="39.0" />
-      <TextField id="txtMyPkmEvolve" layoutX="677.0" layoutY="242.0" promptText="O / X 로 입력해주세요" />
       <TextField id="txtMyPkmTrait" layoutX="450.0" layoutY="242.0" />
       <TextField id="txtMyPkmSpeed" layoutX="677.0" layoutY="192.0" />
       <TextField id="txtMyPkmHP" layoutX="450.0" layoutY="192.0" />
@@ -47,5 +46,6 @@
       <ImageView id="imgMyPkmImage2" fitHeight="87.0" fitWidth="104.0" layoutX="23.0" layoutY="384.0" pickOnBounds="true" />
       <Button id="btnMyPkImage" layoutX="77.0" layoutY="321.0" mnemonicParsing="false" text="포켓몬 이미지 찾기" />
       <Button id="btnMyPkIcon" layoutX="37.0" layoutY="478.0" mnemonicParsing="false" text="아이콘 찾기" />
+      <ComboBox id="txtMyPkmEvolve" layoutX="677.0" layoutY="242.0" prefHeight="23.0" prefWidth="169.0" promptText="O / X 로 입력해주세요" />
    </children>
 </AnchorPane>
