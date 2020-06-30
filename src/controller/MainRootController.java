@@ -253,6 +253,7 @@ public class MainRootController implements Initializable {
 
 			btnMyPkJoin.setOnAction(e2 -> {
 
+				try {
 				if (MyPkmName.getText().trim().equals("") || MyPkmSAttack.getText().trim().equals("")
 						|| MyPkmSDefense.getText().trim().equals("") || MyPkmDefense.getText().trim().equals("")
 						|| MyPkmAttack.getText().trim().equals("") || MyPkmType1.getText().trim().equals("")
@@ -263,7 +264,10 @@ public class MainRootController implements Initializable {
 					Function.getAlert(4, "error", "포켓몬 정보를 빠짐없이 등록해주세요!", "입력후 다시 등록해주세요");
 					return;
 				}
-
+				}catch(Exception e1) {
+						Function.getAlert(4, "error", "포켓몬 정보를 빠짐없이 등록해주세요!", "입력후 다시 등록해주세요");
+						return;
+				}
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				String poketFileName = null;
