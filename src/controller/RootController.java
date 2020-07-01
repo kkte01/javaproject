@@ -414,6 +414,9 @@ public class RootController implements Initializable {
 				try {
 					if (IDName.getText().trim().equals("") && IDEmail.getText().trim().equals("")) {
 						Function.getAlert(4, "ID찾기 오류", "이름 이메일 핸드폰 을 입력하지 않았습니다.", "이름 과 이메일 을 확인후 다시 찾기 해주세요!");
+						IDName.clear();
+						IDEmail.clear();
+						IDPhone.clear();
 						return;
 					}
 					con = DBUtil.getConnection();
